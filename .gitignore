@@ -1,0 +1,13 @@
+# EXTENCIONES IGNORADAS
+*.txt
+
+
+# DIRECTORIOS IGNORADOS
+TEST_EQUIPOS/
+
+
+#ARCHIVOS IGNORADOS
+error_perf_test_*
+spx_process_perf_*
+call_error_perf_test.pl
+call_spx_process_perf.pl

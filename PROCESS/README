@@ -1,0 +1,4 @@
+README 
+ En esta carpeta estan los process que atienden el automatismo de las 
+perforaciones. Cada  uno es llamado con una configuraci[on previa que 
+esta en los archivos .pl que estan en la carpeta PERFORACIONES. 
