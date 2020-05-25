@@ -16,7 +16,7 @@ BEGIN {
    
   @ISA = qw|Exporter|;
  
-  @EXPORT = qw|&ubdate_PARAM read_PARAM|; 
+  @EXPORT = qw|&ubdate_PARAM read_PARAM dlg_performance|; 
  
   @EXPORT_OK = qw(); 
  
@@ -91,7 +91,6 @@ sub ubdate_PARAM
 		my $out = read_MySQL($query);
 		print "CURRENT $PARAM = $out\n";
 }
-
 
 sub read_PARAM	
 {
@@ -198,7 +197,7 @@ sub BD_connect
 	return $DBH;
 }
 
-	
+
 
 ### Finalizar retornando un valor `verdadero'
 1;

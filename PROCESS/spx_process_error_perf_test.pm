@@ -2903,6 +2903,7 @@ sub pw_save
 	{
 		spx_log('PW_SAVE => NO SE CHEQUEA EL NIVEL DE LA BATERIA');
 		spx_log('PW_SAVE => EL EQUIPO TESTEADO NO ES UN TANQUE');
+		hset("$DLGID",'PWR_SAVE','NO','PW_SAVE');
 	}
 	
 	
