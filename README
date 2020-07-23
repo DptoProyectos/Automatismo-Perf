@@ -1,4 +1,0 @@
-README
-  En esta carpeta estan los script con las configuraciones particulares 
- de cada una las perforaciones. Estos scripts llaman a los .pm que se
- encuentran en la carpeta process.
