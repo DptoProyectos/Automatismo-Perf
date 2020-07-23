@@ -71,7 +71,7 @@ sub error_perf_test
 {
 	
 
-	# version 1.4.8	23-07-2020
+	# version 1.4.9	23-07-2020
 
  
 	# -------------------CONTROL DE VERSIONES---------------------------
@@ -865,7 +865,7 @@ sub undef_vars
 		## LEO EL PARAMETRO $last_hora_data
 			### LEO SI EXISTE EL PARAMETRO
 			my $EXISTS = $redis->hexists("ERROR_PERF_TEST_$DLGID", "last_hora_data");
-			if ($EXISTS =ERROR= 0)
+			if ($EXISTS == 0)
 			# SI NO EXISTE LE ASIGNO EL DATO ACTUAL DEL DATALOGGER
 			{
 				$last_hora_data = $last_hora_data;
