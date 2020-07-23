@@ -70,7 +70,7 @@ END { }
 sub error_perf_test
 {
 	
-	# version 1.4.5	10-07-2020
+	# version 1.4.5	10-07-2020-
  
 	# -------------------CONTROL DE VERSIONES---------------------------
 	#
