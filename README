@@ -2,3 +2,18 @@ README
   En esta carpeta estan los script con las configuraciones particulares 
  de cada una las perforaciones. Estos scripts llaman a los .pm que se
  encuentran en la carpeta process.
+ 
+ 
+# FORMA DE LLAMADA:
+/var/etc/crontab => 
+	*/1 * * * * root /drbd/www/cgi-bin/spx/PERFORACIONES/call_error_perf_test.pl > /dev/null 2>&1
+	
+	NOTA: EN EL CRONTAB SE EJECUTA TODO LO RELACIONADO A DETECCION DE ERRORES
+
+//drbd/www/cgi-bin/spx/SPY_CALLBKS.pm =>
+	use lib '/drbd/www/cgi-bin/spx/PERFORACIONES/PROCESS';				#SPY
+	use spx_process_perf;	.
+	
+	process_perf ($dlgid,'CHARGE');
+	
+	NOTA: CADA VEZ QUE EL DATALOGGER TRANSMITE SE LLAMA A LA FUNCION process_perf Y SE LE PASA EL DATALOGGER ID
