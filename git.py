@@ -29,10 +29,10 @@ staged_files = [
                     'spx_process_perf_UYPC03.pl',
                     'error_perf_test_UYPC03.pl ',
                     'error_perf_test_UYPC04.pl',    
-                    'README',
+                    #'README',
                     'call_error_perf_test.pl',
-                    'call_spx_process_perf.pl'
-                    'git.py'
+                    'call_spx_process_perf.pl',
+                    'git.py',
                 ]
 
 
