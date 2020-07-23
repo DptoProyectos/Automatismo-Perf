@@ -70,7 +70,7 @@ END { }
 sub error_perf_test
 {
 	
-	# version 1.4.7	23-07-2020
+	# version 1.4.8	23-07-2020
  
 	# -------------------CONTROL DE VERSIONES---------------------------
 	#
@@ -598,7 +598,7 @@ sub undef_vars
 			{
 				$DO_0 = 1;			
 				$DO_1 = 0;
-				$DO_2 = 1;
+				$DO_2 = 1;chbr
 				$DO_3 = 1;
 			}
 			elsif ($outputs_states == 4)
