@@ -70,7 +70,9 @@ END { }
 sub error_perf_test
 {
 	
-	# version 1.4.5	10-07-2020-
+
+	# version 1.4.8	23-07-2020
+
  
 	# -------------------CONTROL DE VERSIONES---------------------------
 	#
@@ -598,7 +600,7 @@ sub undef_vars
 			{
 				$DO_0 = 1;			
 				$DO_1 = 0;
-				$DO_2 = 1;
+				$DO_2 = 1;chbr
 				$DO_3 = 1;
 			}
 			elsif ($outputs_states == 4)
@@ -801,6 +803,8 @@ sub undef_vars
 		
 		my $count_error_tx;					# CONTADOR DE LOS ERRORES CONTINUOS DE TX
 		my $flag_tdial;						# BANDERA QUE DICE COMO ESTA EL TIMER DIAL
+		my $line;							# LINE ACTUAL DEL DATALOGGER
+		my $last_line;						# LINE ANTERIOR QUE TRANSMITIO EL DATALOGGER
 		
 		spx_log("TEST_TX_ERRORS");
 		#
@@ -826,6 +830,24 @@ sub undef_vars
 		## LEO EL PARAMETRO flag_tdial Y SI NO EXISTE LE ASIGNO 0
 			$flag_tdial = hget($DLGID,'flag_tdial','TEST_TX',0);
 			#
+		## LEO EL LINE DEL DAGTALOGGER	
+			$line = $redis->hget($DLGID, 'LINE');
+			#	
+		
+		## LEO EL PARAMETRO $last_line
+			### LEO SI EXISTE EL PARAMETRO
+			my $EXISTS = $redis->hexists("ERROR_PERF_TEST_$DLGID", "last_line");
+			if ($EXISTS == 0)
+			# SI NO EXISTE LE ASIGNO EL DATO ACTUAL DEL DATALOGGER
+			{
+				$last_line = $line;
+			}
+			else 
+			# LEO EL PARAMETRO
+			{
+				$last_line = $redis->hget("ERROR_PERF_TEST_$DLGID", 'last_line');
+			}	
+			
 		## LEO EL PARAMETRO $last_fecha_data
 			### LEO SI EXISTE EL PARAMETRO
 			my $EXISTS = $redis->hexists("ERROR_PERF_TEST_$DLGID", "last_fecha_data");
@@ -839,11 +861,11 @@ sub undef_vars
 			{
 				$last_fecha_data = $redis->hget("ERROR_PERF_TEST_$DLGID", 'last_fecha_data');
 			}
-			#
+			
 		## LEO EL PARAMETRO $last_hora_data
 			### LEO SI EXISTE EL PARAMETRO
 			my $EXISTS = $redis->hexists("ERROR_PERF_TEST_$DLGID", "last_hora_data");
-			if ($EXISTS == 0)
+			if ($EXISTS =ERROR= 0)
 			# SI NO EXISTE LE ASIGNO EL DATO ACTUAL DEL DATALOGGER
 			{
 				$last_hora_data = $last_hora_data;
@@ -853,6 +875,7 @@ sub undef_vars
 			{
 				$last_hora_data = $redis->hget("ERROR_PERF_TEST_$DLGID", 'last_hora_data');
 			}
+			
 			#
 		## LEO EL PARAMETRO $count_error_tx
 			### LEO SI EXISTE EL PARAMETRO
@@ -870,6 +893,9 @@ sub undef_vars
 			}
 			#
 			#
+			
+		
+			
 		#VARIABLES DE ENTRADA
 		##
 		spx_log('TEST_TX_ERRORS < $DLGID = '.$DLGID);
@@ -890,7 +916,10 @@ sub undef_vars
 		#MAIN	
 		#
 		#SE DETECTA SI SE DETUVO LA TX MAS DE 1 MIN
-		if  (($last_fecha_data == $FECHA_DATA) and ($last_hora_data == $HORA_DATA))
+		#if  (($last_fecha_data == $FECHA_DATA) and ($last_hora_data == $HORA_DATA))
+			
+		# SI LOS LINES SON IGUALES HAY UN ERROR DE TX
+		if  ($last_line eq $line)
 		{
 			spx_log("TEST_TX_ERRORS => TX STOPPED");
 				#
@@ -898,7 +927,7 @@ sub undef_vars
 			# ESCRIBO EL ERROR EN EL TXT
 			if ($TYPE eq 'TQ')
 			{
-				# DIGO QUE LA TX ES CORRECTA Y PARA NO INHABILITAR LA ALARMA DE NIVELM DE LOS TANQUES
+				# DIGO QUE LA TX ES CORRECTA Y PARA NO INHABILITAR LA ALARMA DE NIVEL DE LOS TANQUES
 					$return_tx = 'OK';
 			}
 			else
@@ -1012,9 +1041,7 @@ sub undef_vars
 				## LEO EL PARAMETRO TPOLL DE LA MySQL PARA ESTABLECER EL TOPE DE 
 					my $tpoll = read_PARAM($DLGID,'GENERAL','TPOLL');
 					my $count_limit = ($tpoll)/60;
-					#print "tpoll = $count_limit\n";
-					#print "####################tpoll = $tpoll\n";
-					#
+					
 				## VEO SI EL EQUIPO ESTA TRABAJANDO EN CONTINUO
 					if ($count_limit < 1)
 					# Solo muestro el log de error ERROR_TX
@@ -1070,6 +1097,17 @@ sub undef_vars
 		{
 			spx_log("TEST_TX_ERRORS => TX OK");
 			#
+			# CHEQUEO ERROR EN EL RTC
+			if (($last_fecha_data == $FECHA_DATA) and ($last_hora_data == $HORA_DATA))
+			{
+				spx_log("TEST_TX_ERRORS => RCT ERROR");
+				print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <RTC ERROR> (BAT = $BAT).\n";
+			}
+			else
+			{
+				spx_log("TEST_TX_ERRORS => RCT OK");
+			}
+			
 			# RESETEO EL CONTADO DE ERRORES CONTINUOS DE TX
 				undef $count_error_tx;
 			#
@@ -1119,6 +1157,9 @@ sub undef_vars
 			$redis-> hset("ERROR_PERF_TEST_$DLGID",'last_fecha_data', $FECHA_DATA);
 			$redis-> hset("ERROR_PERF_TEST_$DLGID",'last_hora_data', $HORA_DATA);
 			#
+		## ESCRITURA DEL LINE ACTUAL COMO last_line
+			$redis-> hset("ERROR_PERF_TEST_$DLGID",'last_line', $line);
+			
 		###ESCRIBIR EL INDICADOR DE ERROR DE TX EN LA PERFORACION
 			$redis->hset( "$DLGID", TX_ERROR => "$TX_ERROR" );
 	}
