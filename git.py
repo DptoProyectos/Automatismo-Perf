@@ -11,7 +11,10 @@ import os
 import sys
 from datetime import datetime
 
-version = 'Version 3.0.5'
+version = 'Version 3.0.6'
+
+#ya soporta el firmware nuevo en los tanques.
+
 
 mode = 'upload'                     # [ upload | download ]    
 url_remote = 'http://git.spymovil.com/ycabrera/perforaciones_spy.git'
