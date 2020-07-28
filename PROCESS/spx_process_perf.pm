@@ -2474,7 +2474,7 @@ sub dec2bin
 ####################### MOSTRAR EN CONSOLA #############################
 sub spx_log
 {
-	$print_log = 'OK';
+	#$print_log = 'OK';
 	
 	if ($print_log eq "OK")
 	{
