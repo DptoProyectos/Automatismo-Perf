@@ -36,6 +36,7 @@ staged_files = [
                     'call_error_perf_test.pl',
                     #'call_spx_process_perf.pl',
                     'git.py',
+                    'ext_call.pl',
                 ]
 
 
