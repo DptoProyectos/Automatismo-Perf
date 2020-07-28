@@ -16,6 +16,5 @@ use spx_process_perf;
 my $my_dlgid;	
 
 GetOptions ('dlgid=s' => \$my_dlgid);
-print("=>$my_dlgid\n");
 
 process_perf ($my_dlgid,'CHARGE');
