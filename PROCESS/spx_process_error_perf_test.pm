@@ -3,9 +3,11 @@ package spx_process_error_perf_test;
 #LIBRERIAS 
 	use strict;
 	use Redis;
-	#use Email::Send;
-	#use Email::Send::Gmail;
-	#use Email::Simple::Creator;
+	
+	# Instalar los paquetes para el envio de mail con => apt install libnet-ssleay-perl (NO USAR CPAN)
+	use Email::Send;
+	use Email::Send::Gmail;
+	use Email::Simple::Creator;
 	#
 	use lib '/';	
 	use PERF_CONFIG;										#CONFIGURACION EN EL SERVIDOR	
@@ -71,7 +73,7 @@ sub error_perf_test
 {
 	
 
-	# version 1.5.4	07-11-2020
+	# version 1.5.5	07-11-2020
 
  
 	# -------------------CONTROL DE VERSIONES---------------------------
@@ -1302,7 +1304,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1338,7 +1340,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1375,7 +1377,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1412,7 +1414,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1440,7 +1442,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1463,7 +1465,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1490,7 +1492,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1511,7 +1513,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1557,7 +1559,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1594,7 +1596,7 @@ sub undef_vars
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-											reset_DLG();
+											#reset_DLG();
 											#
 										# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 											$SWITCH_OUTPUTS = 'NO';
@@ -1623,7 +1625,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1646,7 +1648,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1673,7 +1675,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -1696,7 +1698,7 @@ sub undef_vars
 													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
-													reset_DLG();
+													#reset_DLG();
 													#
 												# DESACTIVO LA ALTERNACION DE SALIDAS PARA VER SI SE RECUPERA DEL ERROR Y DE NO SER ASI REINICIAR EL DATALOGGER
 													$SWITCH_OUTPUTS = 'NO';
@@ -3679,6 +3681,11 @@ sub m_cal
 		#spx_log('$formatted_HORA_DATA = '.$formatted_HORA_DATA);
 		#
 		
+		
+		
+		
+		# ALARMA DEL TANQUE VACIO
+							
 	## ALARMA DE NIVEL MINIMO DE TANQUE	
 		# VERIFICO QUE ESTE ACTIVADA LA OPCION DE ENVIAR MAILS
 		if ($SEND_MAIL eq 'SI')
@@ -3735,7 +3742,7 @@ sub m_cal
 										$emailBody .= "\n";
 										#$emailBody .= "##### ESTE MAIL ES UNA PRUEBA #####\n";
 										#
-									#&sendEmail($emailSubject,$emailAddr_tq,$emailBody); # DEBUG
+									&sendEmail($emailSubject,$emailAddr_tq,$emailBody); 
 							
 										$tq_level_mail_alarm = 'SI';
 									}
@@ -3842,7 +3849,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
-									#&sendEmail($emailSubject,$emailAddr_perf,$emailBody); 	# DEBUG
+									&sendEmail($emailSubject,$emailAddr_perf,$emailBody); 
 							
 										$cl_low_level_mail_alarm = 'SI';
 									}
@@ -3948,7 +3955,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
-									#&sendEmail($emailSubject,$emailAddr_perf,$emailBody); # DEBUG
+									&sendEmail($emailSubject,$emailAddr_perf,$emailBody);
 							
 										$cl_high_level_mail_alarm = 'SI';
 									}

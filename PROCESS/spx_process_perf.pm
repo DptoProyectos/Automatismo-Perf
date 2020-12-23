@@ -68,7 +68,7 @@ END { }
  
 sub process_perf
 {
-	# version 1.4.8	24-07-2020 
+	# version 1.4.8	20-11-2020 
 	
 	# -------------------CONTROL DE VERSIONES------------------------------
 	#
@@ -2275,16 +2275,16 @@ sub read_redis
 	
 	#
 	# LECTURA DEL PARAMETRO DE ESTADO ANTERIOR DEL TANQUE
-	my $EXISTS = $redis->hexists("$DLGID_PERF", "tq_state");
+	my $EXISTS = $redis->hexists("$DLGID_TQ", "tq_state");
 	if ($EXISTS == 0)
 	#SI NO EXISTE LO CREO CON EL MES ACTUAL
 	{
-		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");
+		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");
 	}
 	else 
 	#LEO EL PARAMETRO
 	{
-		$tq_state = $redis->hget("$DLGID_PERF", 'tq_state');
+		$tq_state = $redis->hget("$DLGID_TQ", 'tq_state');
 	}
 	
 }
@@ -2302,7 +2302,7 @@ sub write_redis
 		$redis->hset("$DLGID_PERF", "LAST_MES_SYSTEM", "$LAST_MES_SYSTEM");
 		
 	# ESCRIBIR EL VALOR DEL ESTADO ANTERIOR DEL TANQUE
-		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");	
+		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");	
 	
 	# SE ESCRIBE EL UNA VARIABLE CON EL TIPO DE SISTEMA DE EMERGENCIA UTILIZADO
 		if (defined $BY)
@@ -2481,20 +2481,20 @@ sub dec2bin
 ####################### MOSTRAR EN CONSOLA #############################
 sub spx_log
 {
-	#$print_log = 'OK';
+	my $logStr = $_[0];
+
+	print FILE1 "$logStr\n";
 	
 	if ($print_log eq "OK")
 	{
-	my $logStr = $_[0];
-	
-	chomp($logStr);
-	my $msg = "";
-	if ( $logStr ne "") 
-	{
-		$msg = "[$NUMERO_EJECUCION][$logStr]";
-	} 
-	print "$msg\n";
-	return;
+		chomp($logStr);
+		my $msg = "";
+		if ( $logStr ne "") 
+		{
+			$msg = "[$NUMERO_EJECUCION][$logStr]";
+		} 
+		print "$msg\n";
+		return;
 	}
 }
 ####################### NUMERO DE EJECICION ############################
