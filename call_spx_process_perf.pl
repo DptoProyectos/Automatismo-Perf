@@ -42,7 +42,7 @@
 	use strict;
 	use Redis;
 	#	
-	use lib '/';	
+	use lib './';	
 	use PERF_CONFIG;												#CONFIGURACION EN EL SERVIDOR
 	#					
 	use lib "$PERF_CONFIG::spx_process_perf";													
@@ -53,7 +53,7 @@
 
 	#VARIABLES DE CONFIGURACION
 		my $print_log = "OK";										# VER LOS LOGS => "OK"
-		my $DLGID_PERF = 'RIVPERF15';								# ID DATALOGGER PERFORACION
+		my $DLGID_PERF = 'UYPC03';								# ID DATALOGGER PERFORACION
 		my $TYPE = 'CHARGE';										# CUANDO TIENE LE VALOR CHARGE LE INDICA AL spx_process_perf CARGAR CONFIG DE LA REDIS
 		#
 		#
