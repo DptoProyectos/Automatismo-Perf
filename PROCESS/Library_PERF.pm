@@ -2,9 +2,9 @@ package Library_PERF;
  
 use strict;
 use Redis;
-use Email::Send;
-use Email::Send::Gmail;
-use Email::Simple::Creator;
+#use Email::Send;
+#use Email::Send::Gmail;
+#use Email::Simple::Creator;
 use DBI;
 
  
@@ -16,14 +16,14 @@ BEGIN {
    
   @ISA = qw|Exporter|;
  
-  @EXPORT = qw|&ubdate_PARAM read_PARAM dlg_performance|; 
+  @EXPORT = qw|&update_PARAM read_PARAM dlg_performance|; 
  
   @EXPORT_OK = qw(); 
  
   %EXPORT_TAGS = ( ); 
  }
 
-	# version 1.4.4	18-09-2019 
+	# version 1.4.6	30-07-2020 
 
 	# -------------------CONTROL DE VERSIONES---------------------------
 	#
@@ -43,7 +43,7 @@ BEGIN {
 
 
 
-sub ubdate_PARAM	
+sub update_PARAM	
 {
 	# ACTUALIZA EL VALOR DE CONFIGURACION DE UN PARAMETRO
 	# CALL:
@@ -55,12 +55,12 @@ sub ubdate_PARAM
 		my $PARAM = $_[2];
 		my $VALUE = $_[3];
 		#
-	# IMPRIMO VARIAVLES DE ENTRADA	
-		print "\$DLGID = $DLGID\n";
-		print "\$TIPO_CONFIG = $TIPO_CONFIG\n";
-		print "\$PARAM = $PARAM\n";
-		print "\$VALUE = $VALUE	\n";
-		#
+	## IMPRIMO VARIAVLES DE ENTRADA	
+	#	print "\$DLGID = $DLGID\n";
+	#	print "\$TIPO_CONFIG = $TIPO_CONFIG\n";
+	#	print "\$PARAM = $PARAM\n";
+	#	print "\$VALUE = $VALUE	\n";
+		
 	# OBTENGO LAS unidades_id
 		my $query = 'SELECT id FROM spx_unidades WHERE dlgid = '."'".$DLGID."'";
 		my $unidades_id = read_MySQL($query);
@@ -79,24 +79,24 @@ sub ubdate_PARAM
 	# LEO EL VALOR DEL PREVIO DEL PARAMETRO QUE SE QUIERE CAMBIAR 
 		my $query = 'SELECT value FROM spx_configuracion_parametros WHERE parametro = '."'".$PARAM."'"." AND configuracion_id = $unidades_configuracion_id";
 		my $out = read_MySQL($query);
-		print "LAST $PARAM = $out\n";
+		#print "LAST $PARAM = $out\n";
 		#
 	# ACTUALIZO EL VALOR DEL PARAMETRO QUE SE QUIERE CAMBIAR 
 		my $query = "UPDATE spx_configuracion_parametros SET value = $VALUE WHERE parametro = "."'".$PARAM."'"." AND configuracion_id = $unidades_configuracion_id";
 		my $out = write_MySQL($query);
-		print "WRITE $PARAM = $VALUE\n";
+		#print "WRITE $PARAM = $VALUE\n";
 		#
 	# LEO EL VALOR PARA CHEQUEAR QUE SE HIZO LA ACTUALIZACION DEL PARAMETRO QUE SE QUIERE CAMBIAR 	
 		my $query = 'SELECT value FROM spx_configuracion_parametros WHERE parametro = '."'".$PARAM."'"." AND configuracion_id = $unidades_configuracion_id";
 		my $out = read_MySQL($query);
-		print "CURRENT $PARAM = $out\n";
+		#print "CURRENT $PARAM = $out\n";
 }
 
 sub read_PARAM	
 {
 	# ACTUALIZA EL VALOR DE CONFIGURACION DE UN PARAMETRO
 	# CALL:
-	#	ubdate_PARAM($DLGID,$TIPO_CONFIG,$PARAM,$VALUE);
+	#	read_PARAM($DLGID,$TIPO_CONFIG,$PARAM);
 	
 	# VARIABLES DE ENTRADA
 		my $DLGID = $_[0];
@@ -146,6 +146,7 @@ sub read_MySQL
 		#print 'sth0 = '."$sth0"."\n";
 		my $rows = $sth0->execute();	
 		my @row0 = $sth0->fetchrow_array();
+		
 		#
 	# OBTENGO LA LECTURA
 		my $out = $row0[0];
@@ -153,6 +154,7 @@ sub read_MySQL
 		#
 	# RETORNO EL VALOR LEIDO
 		return $out;
+		print("lo que esta sacando es esto: $out")
 }
 
 sub write_MySQL
@@ -178,7 +180,8 @@ sub BD_connect
 		my $dbpasswd = $PERF_CONFIG::dbpasswd;
 		my $host= $PERF_CONFIG::host;
 		my $dbase= $PERF_CONFIG::dbase;
-		my $datasource="DBI:mysql:database=$dbase;host=$host";
+		#my $datasource="DBI:mysql:database=$dbase;host=$host";
+		my $datasource="DBI:Pg:database=$dbase;host=$host";
 		my $DBH;
 		
 	# MySQL CONFIG

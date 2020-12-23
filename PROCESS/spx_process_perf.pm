@@ -42,7 +42,7 @@ BEGIN {
 		$FECHA_DATA $HORA_DATA $FECHA_DATA_TQ $HORA_DATA_TQ								
 		
 		$PPR $LTQ $CL $BAT $GA $FE $LM $BD $BP $BY $TM $ABY
-		$FT $PCAU $bt
+		$FT $PCAU $ICAU $bt
 				
 		$LAST_DO_0 $LAST_DO_1 $LAST_DO_2 $LAST_DO_3 
 		
@@ -68,7 +68,7 @@ END { }
  
 sub process_perf
 {
-	# version 1.4.6	10-07-2020 
+	# version 1.4.8	24-07-2020 
 	
 	# -------------------CONTROL DE VERSIONES------------------------------
 	#
@@ -150,6 +150,7 @@ sub process_perf
 		$ABY;
 		$FT;
 		$PCAU;
+		$ICAU;
 		#
 		#
 	# ESTADO ANTERIOR DE LAS SALIDAS	
@@ -202,7 +203,7 @@ sub process_perf
 		#
 		#
 	##OTRAS
-		$redis=Redis->new();							# CONNECT TO REDIS
+		$redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	# CONNECT TO REDIS
 		$NUMERO_EJECUCION;								# NUMERO DE VECES QUE CORRE EL SCRIPT SIN REINICIO DEL SERVER
 		$LAST_DIA_SYSTEM;								# GUARDA EL DIA DE LA ULTIMA CORRIDA DEL SCRIPT
 		$LAST_MES_SYSTEM;								# GUARDA EL MES DE LA ULTIMA CORRIDA DEL SCRIPT
@@ -219,6 +220,7 @@ sub process_perf
 	no_execution();
 	fecha_system();
 	open_file();
+	print FILE1 "TYPE => $TYPE.\n"; 	# DEBUG
 	read_redis();
 	chequeo_alarmas();
 	main();
@@ -273,6 +275,7 @@ sub main
 		##  Se llama la funcion para que se declare error en el sensor cuando vengas 2 muestras fallidas. Se recupera el error
 		## cuando pasaron 6 horas continuas con muestras correctas.  
 		($ERR_SENSOR_TQ, $LTQ) = chequeo_sensor($M_ERR_SENSOR_TQ, $DLGID_TQ, 'TQ', "$FECHA_DATA_TQ$HORA_DATA_TQ", $LTQ, $H_MAX_TQ, 2, 360, 0);
+		#($ERR_SENSOR_TQ, $LTQ) = chequeo_sensor($M_ERR_SENSOR_TQ, $DLGID_TQ, 'TQ', "$FECHA_DATA_TQ$HORA_DATA_TQ", $LTQ, $H_MAX_TQ, 2, 6, 0);
 		#
 		#
 	# HACEMOS QUE CUANDO LA PERFORACION TENGA TANQUE LEJANO EL AUTOMATISMO TRABAJE CON LA PREDICCION DE DATOS
@@ -594,6 +597,7 @@ sub undef_vars
 		undef $ABY;
 		undef $FT;
 		undef $PCAU;
+		undef $ICAU;
 		#
 		#
 	# ESTADO ANTERIOR DE LAS SALIDAS	
@@ -1283,7 +1287,10 @@ sub chequeo_sensor
 						# CHEQUEO SI EL VALOR DEL SENSOR ES MAYOR de 50cm del max_value O 0.1 cm MENOR QUE CERO
 						if (($value < -0.1) or ($value > ($max_value+0.5)) or ($value eq 'inf'))
 						{
-							spx_log("CHEQUEO_SENSOR_$suffix => MUESTRA DEL SENSOR $suffix CON ERROR");
+							# Guardo el valor del sensor que esta generando la activacion del la alarma.
+							$redis->hset("$DLGID","value_error_sensor_$suffix", $value);
+							
+							spx_log("CHEQUEO_SENSOR_$suffix => MUESTRA DEL SENSOR $suffix CON ERROR [sensor = $value]");
 							# mantengo a la salida el valor del dato anterior
 							$value_out = $last_value;
 								#
@@ -1347,7 +1354,7 @@ sub chequeo_sensor
 						}
 						else
 						{
-							spx_log("CHEQUEO_SENSOR_$suffix => MUESTRA DEL SENSOR $suffix SIN ERROR");
+							spx_log("CHEQUEO_SENSOR_$suffix => MUESTRA DEL SENSOR $suffix SIN ERROR [$value]");
 								#
 							# Escribo el valor del dato analizado para tenerlo en casos futuras de fallas
 							$redis->hset("$DLGID", "last_value_$suffix", $value);
@@ -2069,7 +2076,7 @@ sub read_redis
 		#
 		#
 	##ELIMINO PARAMETROS DE CAUDAL EN CASO DE QUE EXISTA EN LA REDIS CUANDO NO HAYA UN SENSADO DEL CAUDAL DE IMPULSION DE LA BOMBA
-	if (defined $PCAU)
+	if ((defined $PCAU)|(defined $ICAU))
 	{
     ###LEO SI EXISTE EL PARAMETRO CAUDAL_IMP
 		my $EXISTS = $redis->hexists("$DLGID_PERF", "CAUDAL_IMP");
@@ -2268,16 +2275,16 @@ sub read_redis
 	
 	#
 	# LECTURA DEL PARAMETRO DE ESTADO ANTERIOR DEL TANQUE
-	my $EXISTS = $redis->hexists("$DLGID_TQ", "tq_state");
+	my $EXISTS = $redis->hexists("$DLGID_PERF", "tq_state");
 	if ($EXISTS == 0)
 	#SI NO EXISTE LO CREO CON EL MES ACTUAL
 	{
-		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");
+		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");
 	}
 	else 
 	#LEO EL PARAMETRO
 	{
-		$tq_state = $redis->hget("$DLGID_TQ", 'tq_state');
+		$tq_state = $redis->hget("$DLGID_PERF", 'tq_state');
 	}
 	
 }
@@ -2295,7 +2302,7 @@ sub write_redis
 		$redis->hset("$DLGID_PERF", "LAST_MES_SYSTEM", "$LAST_MES_SYSTEM");
 		
 	# ESCRIBIR EL VALOR DEL ESTADO ANTERIOR DEL TANQUE
-		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");	
+		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");	
 	
 	# SE ESCRIBE EL UNA VARIABLE CON EL TIPO DE SISTEMA DE EMERGENCIA UTILIZADO
 		if (defined $BY)
@@ -2974,6 +2981,7 @@ sub flow_calc
 	#CHEQUEO SI ESTOY EN UN CASO DE PERFORACION CON CAUDALIMETRO CONECTADO.
 	if (defined $PCAU)
 	{
+		spx_log('CALCULO DE CAUDAL => PERF. CON CAUD DE PULSOS');
 		#INCIALIZO EN LA REDIS LAS VARIABLES QUE VOY A USAR
 		my $EXISTS = $redis->hexists("$DLGID_PERF", 'count_time_15seg_cau');
 		if ($EXISTS == 0)
@@ -3094,6 +3102,16 @@ sub flow_calc
 		}
 		
 	}
+	elsif (defined $ICAU)
+	{
+		spx_log('CALCULO DE CAUDAL => PERF. CON CAUD DE CORRIENTE');
+		if ($BP == 1){
+			$redis->hset("$DLGID_PERF", "CAUDAL_IMP", $ICAU);
+		}
+		else{
+			$redis->hset("$DLGID_PERF", "CAUDAL_IMP", 0);
+		}
+	}
 	else
 	{
 		spx_log('CALCULO DE CAUDAL => NO SE CALCULA {PERFORACION SIN CAUDALIMETRO}');
@@ -3183,6 +3201,7 @@ sub read_dlg_data
 		else
 		{
 			my $line = $redis->hget( $DLGID, 'LINE' );
+			print FILE1 "LINE => [$DLGID] $line.\n";  # DEBUG
 			
 			# CHEQUEO QUE EL LINE TIENE VALORES VALIDOS
 			if ($line eq 'NUL')
@@ -3301,6 +3320,10 @@ sub read_dlg_data
 				{
 					$PCAU = $value[1];
 				}
+				elsif ($value[0] eq 'ICAU')
+				{
+					$ICAU = $value[1];
+				}
 				elsif ($value[0] eq 'bt')
 				{
 					$bt = $value[1];		
@@ -3367,6 +3390,10 @@ sub read_dlg_data
 	if (defined $PCAU)
 	{
 	spx_log('READ_DLG_DATA > $PCAU = '.$PCAU);
+	}
+	if (defined $ICAU)
+	{
+	spx_log('READ_DLG_DATA > $ICAU = '.$ICAU);
 	}
 	if (defined $bt)
 	{

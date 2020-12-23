@@ -66,7 +66,7 @@
 		#
 		#
 	##OTRAS
-		my $redis=Redis->new();				# CONNECT TO REDIS
+		my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);				# CONNECT TO REDIS
 		my $SCAN;							# VERIABLE CON LOS DATALOGGERS A SCANEAR
 
 ########################## MAIN PROGRAM ################################

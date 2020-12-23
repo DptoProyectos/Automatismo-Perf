@@ -10,7 +10,7 @@ use strict;
  
 use Getopt::Long;
 
-use lib '/drbd/www/cgi-bin/spx/PERFORACIONES/PROCESS';				#SPY
+use lib '/datos/cgi-bin/spx/PERFORACIONES/PROCESS';				#SPY
 use spx_process_perf;	
  
 my $my_dlgid;	
@@ -18,3 +18,7 @@ my $my_dlgid;
 GetOptions ('dlgid=s' => \$my_dlgid);
 
 process_perf ($my_dlgid,'CHARGE');
+
+
+
+

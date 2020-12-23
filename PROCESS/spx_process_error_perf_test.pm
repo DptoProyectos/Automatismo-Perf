@@ -3,9 +3,9 @@ package spx_process_error_perf_test;
 #LIBRERIAS 
 	use strict;
 	use Redis;
-	use Email::Send;
-	use Email::Send::Gmail;
-	use Email::Simple::Creator;
+	#use Email::Send;
+	#use Email::Send::Gmail;
+	#use Email::Simple::Creator;
 	#
 	use lib '/';	
 	use PERF_CONFIG;										#CONFIGURACION EN EL SERVIDOR	
@@ -71,7 +71,7 @@ sub error_perf_test
 {
 	
 
-	# version 1.4.9	23-07-2020
+	# version 1.5.4	07-11-2020
 
  
 	# -------------------CONTROL DE VERSIONES---------------------------
@@ -159,7 +159,7 @@ sub error_perf_test
 			#
 			#
 		#OTRAS
-			$redis=Redis->new();			# CONNECT TO REDIS
+			$redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	# CONNECT TO REDIS
 			$LAST_FECHA_DATA;				# ARREGLO DE FECHA Y HORA PARA LA VISUALIZACION
 			$last_fecha_data;				# FECHA DEL DATO DE LA UTIMA CORRIDA DEL PROGRAMA
 			$last_hora_data;				# HORA DEL DATO DE LA UTIMA CORRIDA DEL PROGRAMA
@@ -600,7 +600,7 @@ sub undef_vars
 			{
 				$DO_0 = 1;			
 				$DO_1 = 0;
-				$DO_2 = 1;chbr
+				$DO_2 = 1;
 				$DO_3 = 1;
 			}
 			elsif ($outputs_states == 4)
@@ -628,12 +628,27 @@ sub undef_vars
 				$outputs_states = $outputs_states + 1;
 			}
 			
+			# ESCRIBIR LAS SALIDAS PARA EL DATALOGGER
+			#~ $DO_0 = 0;
+			#~ $DO_1 = 0;
+			#~ $DO_2 = 0;
+			#~ $DO_3 = 0;
+			$DO_4 = 0;
+			$DO_5 = 0;
+			$DO_6 = 0;
+			$DO_7 = 0;
+			#
+			my $OUTPUTS_WORD_BIN = "$DO_7$DO_6$DO_5$DO_4$DO_3$DO_2$DO_1$DO_0";
+			my $OUTPUTS_WORD_DEC = bin2dec($OUTPUTS_WORD_BIN); 
+			#
+			$redis->hset( $DLGID, "OUTPUTS", $OUTPUTS_WORD_DEC );
+			#
+			# IMPRIMO LOGS	
 			spx_log('SWITCH_OUTPUTS > $DO_0 = '.$DO_0);
 			spx_log('SWITCH_OUTPUTS > $DO_1 = '.$DO_1);
 			spx_log('SWITCH_OUTPUTS > $DO_2 = '.$DO_2);
 			spx_log('SWITCH_OUTPUTS > $DO_3 = '.$DO_3);
 		}
-		
 	}
 
 
@@ -783,8 +798,9 @@ sub undef_vars
 						# DETECTO ERROR EN EL SENSOR DE LA PERFORACION
 						if ( $ERR_SENSOR_TQ eq 'SI' )
 						{
-							spx_log('DETECCION DE EVENTOS => ERROR EN EL SENSOR DEL TANQUE');
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> ERROR EN EL SENSOR DEL TANQUE.\n";
+							my $value_error_sensor_TQ = $redis->hget($DLGID, 'value_error_sensor_TQ');
+							spx_log("DETECCION DE EVENTOS => ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ]");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ].\n";
 						}
 					}
 					else
@@ -828,7 +844,10 @@ sub undef_vars
 		# READ_BD
 		#
 		## LEO EL PARAMETRO flag_tdial Y SI NO EXISTE LE ASIGNO 0
-			$flag_tdial = hget($DLGID,'flag_tdial','TEST_TX',0);
+			#$flag_tdial = hget($DLGID,'flag_tdial','TEST_TX',0);
+			$flag_tdial = read_PARAM($DLGID,'GENERAL','TDIAL');				# se lee desde la config del dlg
+			
+			
 			#
 		## LEO EL LINE DEL DAGTALOGGER	
 			$line = $redis->hget($DLGID, 'LINE');
@@ -2023,7 +2042,7 @@ sub undef_vars
 				}
 				#
 				#
-				#
+
 	# LEO LAS VARIABLES DE CONFIGURACION SEGUN EL TIPO DE EQUIPO TESTEADO
 		## CASO DE QUE EL EQUIPO TESTADO SEA UNA PERFORACION
 		if ($TYPE eq 'PERF')
@@ -2401,6 +2420,9 @@ sub undef_vars
 	{
 		spx_log('READ_REDIS');
 		#	
+		$TYPE = $redis->hget("$DLGID", "TYPE");			# DEBUG
+		print FILE1 "TYPE => $TYPE.\n";					# DEBUG
+		#
 	# LEO PARAMETROS SOLO SI SE TRATA DE UNA PERFORACION	
 		if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))
 		{		
@@ -2695,6 +2717,7 @@ sub undef_vars
 			#
 			#
 			#PRINT_RESULT
+			#~ spx_log ("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 			#~ spx_log ("DO_0 = $DO_0");
 			#~ spx_log ("DO_1 = $DO_1");
 			#~ spx_log ("DO_2 = $DO_2");
@@ -2729,7 +2752,7 @@ sub pw_save
 	#  ESTA FUNCION GARANTIZA QUE CUANDO SE ESTE DESCARGANDO LA BATERIA EL EQUIPO  
 	# COMIENCE A TRABAJAR EN MODO DISCRETO. CUANDO LA BATERIA SE RECUPERA VUELE A 
 	# MODO CONTINUO
-		
+	
 	# DECLARACION DE VARIABLES
 		my $v_low = $_[0];
 		my $v_hight = $_[1];
@@ -2762,7 +2785,9 @@ sub pw_save
 		
 	# READ_BD
 	## LEO EL PARAMETRO flag_tdial Y SI NO EXISTE LE ASIGNO 0
-		$flag_tdial = hget($DLGID,'flag_tdial','PW_SAVE',0);
+		$flag_tdial = read_PARAM($DLGID,'GENERAL','TDIAL');				# se lee desde la config del dlg
+		#$flag_tdial = hget($DLGID,'flag_tdial','PW_SAVE',0);			# se lee desde redis
+		spx_log("PW_SAVE < \$TDIAL = $flag_tdial");
 		#	
 	## LEO EL PARAMETRO count_VL
 		$count_VL = hget($DLGID,'count_VL','PW_SAVE');
@@ -2791,11 +2816,11 @@ sub pw_save
 						spx_log("PW_SAVE => SE SETEA TDIAL = 900");
 							#
 						# SE SETEA EL TDIAL A 900
-							ubdate_PARAM($DLGID,'GENERAL','TDIAL',900);
+							update_PARAM($DLGID,'GENERAL','TDIAL',900);
 							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <PW_SAVE> SE PASA EL SISTEMA A MODO DISCRETO { bt = $bt }\n";
 							#
 						# SE SETEA EL PWRS_MODO A 0 POR PRECAUCION
-							ubdate_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
+							update_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
 							#
 						# SE MANDA A REINICIAR EL DATALOGGER PARA QUE TOME LA CONFIGURACION
 							hset("$DLGID",'RESET','TRUE','PW_SAVE');
@@ -2859,11 +2884,11 @@ sub pw_save
 						spx_log("PW_SAVE => SE SETEA TDIAL = 0");
 							#
 						# SE SETEA EL TDIAL A 0
-							ubdate_PARAM($DLGID,'GENERAL','TDIAL',0);
+							update_PARAM($DLGID,'GENERAL','TDIAL',0);
 							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <PW_SAVE> SE PASA EL SISTEMA A MODO CONTINUO { bt = $bt }\n";
 							#
 						# SE SETEA EL PWRS_MODO A 0 POR PRECAUCION
-							ubdate_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
+							update_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
 							#
 						# SE MANDA A REINICIAR EL DATALOGGER PARA QUE TOME LA CONFIGURACION
 							hset("$DLGID",'RESET','TRUE','PW_SAVE');
@@ -2943,6 +2968,9 @@ sub pw_save
 	}
 	else
 	{
+		# SETEAMOS EL TDIAL A CERO
+		update_PARAM($DLGID,'GENERAL','TDIAL',0);
+		
 		spx_log('PW_SAVE => NO SE CHEQUEA EL NIVEL DE LA BATERIA');
 		spx_log('PW_SAVE => EL EQUIPO TESTEADO NO ES UN TANQUE');
 		hset("$DLGID",'PWR_SAVE','NO','PW_SAVE');
@@ -3445,23 +3473,6 @@ sub m_cal
 	{
 		spx_log("WRITE REDIS");
 				
-		# ESCRIBIR LAS SALIDAS PARA EL DATALOGGER
-			#~ $DO_0 = 0;
-			#~ $DO_1 = 0;
-			#~ $DO_2 = 0;
-			#~ $DO_3 = 0;
-			$DO_4 = 0;
-			$DO_5 = 0;
-			$DO_6 = 0;
-			$DO_7 = 0;
-			#
-			my $OUTPUTS_WORD_BIN = "$DO_7$DO_6$DO_5$DO_4$DO_3$DO_2$DO_1$DO_0";
-			my $OUTPUTS_WORD_DEC = bin2dec($OUTPUTS_WORD_BIN); 
-			#
-			$redis->hset( $DLGID, "OUTPUTS", $OUTPUTS_WORD_DEC );
-		
-		
-
 		# ESCRIBO LA FECHA Y HORA PARA EL CASO DE QUE SEA UN TANQUE
 		## ME FIJO EN EL TIPO DE INSTALACION QUE TENGO
 			if ($TYPE eq 'TQ')
@@ -3724,7 +3735,7 @@ sub m_cal
 										$emailBody .= "\n";
 										#$emailBody .= "##### ESTE MAIL ES UNA PRUEBA #####\n";
 										#
-									&sendEmail($emailSubject,$emailAddr_tq,$emailBody);
+									#&sendEmail($emailSubject,$emailAddr_tq,$emailBody); # DEBUG
 							
 										$tq_level_mail_alarm = 'SI';
 									}
@@ -3831,7 +3842,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
-									&sendEmail($emailSubject,$emailAddr_perf,$emailBody);
+									#&sendEmail($emailSubject,$emailAddr_perf,$emailBody); 	# DEBUG
 							
 										$cl_low_level_mail_alarm = 'SI';
 									}
@@ -3937,7 +3948,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
-									&sendEmail($emailSubject,$emailAddr_perf,$emailBody);
+									#&sendEmail($emailSubject,$emailAddr_perf,$emailBody); # DEBUG
 							
 										$cl_high_level_mail_alarm = 'SI';
 									}
@@ -4080,7 +4091,7 @@ sub m_cal
 			{
 				print "NO SE DEFINIO DE FORMA CORRECTA EL SERVIDOR DE CORREO []";
 			}
-			
+		
 		
 	}  
 	  
@@ -4114,6 +4125,7 @@ sub m_cal
 			else
 			{
 				my $line = $redis->hget( $DLGID, 'LINE' );
+				print FILE1 "LINE => [$DLGID] $line.\n";	# DEBUG
 				
 				# CHEQUEO QUE EL LINE TIENE VALORES VALIDOS
 				if ($line eq 'NUL')
@@ -4515,7 +4527,7 @@ sub m_cal
 	{
 		#hset($keys,$param,$value,$identifier);
 		#
-		 my $redis=Redis->new();		
+		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);		
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $value = $_[2];
@@ -4583,7 +4595,7 @@ sub m_cal
 		#out = hexist($keys,$param,$identifier);
 		#out = 1 => exits
 		#	 = 0 => don't exist
-		 my $redis=Redis->new();		
+		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);		
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $identifier = $_[2];
@@ -4642,7 +4654,7 @@ sub m_cal
 	{
 		#out = hget($keys,$param,$identifier,$default);
 		#
-		 my $redis=Redis->new();		
+		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $identifier = $_[2];
@@ -4723,7 +4735,7 @@ sub m_cal
 		sub hdel
 		{
 			#out = hdel($keys,$param,$identifier);
-			 my $redis=Redis->new();		
+			 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);
 			 my $keys = $_[0];
 			 my $param = $_[1];
 			 my $identifier = $_[2];
