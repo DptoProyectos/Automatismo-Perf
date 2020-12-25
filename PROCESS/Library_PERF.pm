@@ -1,13 +1,14 @@
 package Library_PERF;
- 
+
+# 0.7
 use strict;
 use Redis;
-#use Email::Send;
-#use Email::Send::Gmail;
-#use Email::Simple::Creator;
+use Email::Send;
+use Email::Send::Gmail;
+use Email::Simple::Creator;
 use DBI;
 
- 
+
 BEGIN {
   use Exporter ();
   use vars qw|$VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS|;
@@ -194,7 +195,7 @@ sub BD_connect
 	$DBH = DBI->connect($datasource, $dbuser, $dbpasswd);
 	if (! $DBH) 
 	{
-		spx_log( "ERROR No puedo conectarme a la base de datos".DBI->errstr);
+		#( "ERROR No puedo conectarme a la base de datos".DBI->errstr);
 		die;
 	}
 	return $DBH;

@@ -1,10 +1,20 @@
 package spx_process_perf;
- 
+
+# BLOCK FOR GET PROJECT PATH AND ADD IT TO @INC
+my $projectPath = '';
+BEGIN {
+	use File::Basename qw();
+	my $folderProjectName = 'PERFORACIONES';
+	my ($name, $path, $suffix) = File::Basename::fileparse($0);
+	my @dir = split('/',$path);
+	for (my $i = 0; $i < @dir; $i++ ) {$projectPath = "$projectPath$dir[$i]/";if($dir[$i] eq $folderProjectName){last}}
+}
+
 #LIBRERIAS
 	use strict;
 	use Redis;
 	#
-	use lib '/';	
+	use lib "$projectPath";
 	use PERF_CONFIG;										#CONFIGURACION EN EL SERVIDOR	
 	#
 	use lib "$PERF_CONFIG::Library_PERF";												
@@ -68,24 +78,6 @@ END { }
  
 sub process_perf
 {
-	# version 1.4.8	20-11-2020 
-	
-	# -------------------CONTROL DE VERSIONES------------------------------
-	#
-	#	1.4.3	
-	#	Se creo la variable EMERGENCY_STATE
-	#	Se le hicieron algunas adaptaciones para que funcionara con el sistema de visualizacion nuevo
-	#	Se implemento la compatibilidad de caudal con el sistema que actualmente esta instalado
-	#	Esta version espera un caudal en m3, no en pulsos
-	#	Se sorrigio que se estaba escribiendo en la variable DLGID_PERF EL VALOR DE DLGID_TQ
-	#	Se ajusto para que el sistema fuera compatible con perforaciones que no tienen medidor de cloro
-	#
-	#	1.4.4
-	#	Se le saco la variable CL_LIBRE_OFFSET y se corrigio el nombre del process
-	#	Se le actualizo la condicion de que no se saliera del script cuando no hubiese sensor de presion
-	#	Se le hizo para que cuando no existiera la variable PPR se elimine ERROR_SERNSOR_PERF en caso exista en la REDIS
-	#
-	#----------------------------------------------------------------------	
 		
 ################### DEFINICION DE VARIABLES #########################
 #
@@ -203,7 +195,7 @@ sub process_perf
 		#
 		#
 	##OTRAS
-		$redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	# CONNECT TO REDIS
+		$redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);	# CONNECT TO REDIS
 		$NUMERO_EJECUCION;								# NUMERO DE VECES QUE CORRE EL SCRIPT SIN REINICIO DEL SERVER
 		$LAST_DIA_SYSTEM;								# GUARDA EL DIA DE LA ULTIMA CORRIDA DEL SCRIPT
 		$LAST_MES_SYSTEM;								# GUARDA EL MES DE LA ULTIMA CORRIDA DEL SCRIPT
@@ -2275,16 +2267,16 @@ sub read_redis
 	
 	#
 	# LECTURA DEL PARAMETRO DE ESTADO ANTERIOR DEL TANQUE
-	my $EXISTS = $redis->hexists("$DLGID_TQ", "tq_state");
+	my $EXISTS = $redis->hexists("$DLGID_PERF", "tq_state");
 	if ($EXISTS == 0)
 	#SI NO EXISTE LO CREO CON EL MES ACTUAL
 	{
-		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");
+		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");
 	}
 	else 
 	#LEO EL PARAMETRO
 	{
-		$tq_state = $redis->hget("$DLGID_TQ", 'tq_state');
+		$tq_state = $redis->hget("$DLGID_PERF", 'tq_state');
 	}
 	
 }
@@ -2302,7 +2294,7 @@ sub write_redis
 		$redis->hset("$DLGID_PERF", "LAST_MES_SYSTEM", "$LAST_MES_SYSTEM");
 		
 	# ESCRIBIR EL VALOR DEL ESTADO ANTERIOR DEL TANQUE
-		$redis->hset("$DLGID_TQ", 'tq_state', "$tq_state");	
+		$redis->hset("$DLGID_PERF", 'tq_state', "$tq_state");	
 	
 	# SE ESCRIBE EL UNA VARIABLE CON EL TIPO DE SISTEMA DE EMERGENCIA UTILIZADO
 		if (defined $BY)
@@ -2481,6 +2473,8 @@ sub dec2bin
 ####################### MOSTRAR EN CONSOLA #############################
 sub spx_log
 {
+	#$print_log = 'OK';
+
 	my $logStr = $_[0];
 
 	print FILE1 "$logStr\n";

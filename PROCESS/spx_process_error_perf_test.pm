@@ -1,15 +1,25 @@
 package spx_process_error_perf_test;
 
+# BLOCK FOR GET PROJECT PATH AND ADD IT TO @INC
+my $projectPath = '';
+BEGIN {
+	use File::Basename qw();
+	my $folderProjectName = 'PERFORACIONES';
+	my ($name, $path, $suffix) = File::Basename::fileparse($0);
+	my @dir = split('/',$path);
+	for (my $i = 0; $i < @dir; $i++ ) {$projectPath = "$projectPath$dir[$i]/";if($dir[$i] eq $folderProjectName){last}}
+}
+
 #LIBRERIAS 
 	use strict;
 	use Redis;
-	
+	#
 	# Instalar los paquetes para el envio de mail con => apt install libnet-ssleay-perl (NO USAR CPAN)
 	use Email::Send;
 	use Email::Send::Gmail;
 	use Email::Simple::Creator;
 	#
-	use lib '/';	
+	use lib "$projectPath";
 	use PERF_CONFIG;										#CONFIGURACION EN EL SERVIDOR	
 	#
 	use lib "$PERF_CONFIG::Library_PERF";												
@@ -72,28 +82,6 @@ END { }
 sub error_perf_test
 {
 	
-
-	# version 1.5.5	07-11-2020
-
- 
-	# -------------------CONTROL DE VERSIONES---------------------------
-	#
-	#	Se implemento la funcion pw_save
-	#	Se modifico la funcion tx_error para que muestre siempre cuando el equipo paso mas de 15 min caido
-	#	Se modifico test outputs para que le entraran los valores {SI|NO}
-	#	Se implemento el log de cambio de esto en el DLG_Performance. Se saco del script performance
-	#	Se modificaron unos logs de error TX
-	#	Se modificaron algunos logs en test_outputs.
-	#	Se le puso una condicion para que no chequeara el sistema de emergencia con error en el sensor
-	#	SE LE PUSO UNA EXCEPCION EN reset_DLG para que UYSAL010 PARA QUE NO SE REINICIARA OJOOOOO
-	#	Se le hicieron algunas adaptaciones para que funcionara con el sistema de visualizacion nuevo
-	#	Se implemento un offset_bt SOLO CONFIGURABLE DESDE LA REDIS para corregir las mediciones erroneas del datalogger
-	#	Cuando el equipo es un OTHER se fija en el TPOLL para ver cuando hay que registrar error TX
-	#	Se habilito el envio de mails para el servidor de spy
-	#	Se corrigio la forma en que se escribia tq_count_mail_alarm
-	#
-	#-------------------------------------------------------------------
-
 
 #################### VARIABLES DE CONFIGURACION ########################
 
@@ -161,7 +149,7 @@ sub error_perf_test
 			#
 			#
 		#OTRAS
-			$redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	# CONNECT TO REDIS
+			$redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);	# CONNECT TO REDIS
 			$LAST_FECHA_DATA;				# ARREGLO DE FECHA Y HORA PARA LA VISUALIZACION
 			$last_fecha_data;				# FECHA DEL DATO DE LA UTIMA CORRIDA DEL PROGRAMA
 			$last_hora_data;				# HORA DEL DATO DE LA UTIMA CORRIDA DEL PROGRAMA
@@ -4534,7 +4522,7 @@ sub m_cal
 	{
 		#hset($keys,$param,$value,$identifier);
 		#
-		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);		
+		 my $redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);		
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $value = $_[2];
@@ -4602,7 +4590,7 @@ sub m_cal
 		#out = hexist($keys,$param,$identifier);
 		#out = 1 => exits
 		#	 = 0 => don't exist
-		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);		
+		 my $redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);		
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $identifier = $_[2];
@@ -4661,7 +4649,7 @@ sub m_cal
 	{
 		#out = hget($keys,$param,$identifier,$default);
 		#
-		 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);	
+		 my $redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);	
 		 my $keys = $_[0];
 		 my $param = $_[1];
 		 my $identifier = $_[2];
@@ -4742,7 +4730,7 @@ sub m_cal
 		sub hdel
 		{
 			#out = hdel($keys,$param,$identifier);
-			 my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);
+			 my $redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);
 			 my $keys = $_[0];
 			 my $param = $_[1];
 			 my $identifier = $_[2];

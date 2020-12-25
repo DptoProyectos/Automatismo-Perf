@@ -35,14 +35,22 @@
 #
 #
 
-	# version 1.4.4	19-09-2019
+# BLOCK FOR GET PROJECT PATH AND ADD IT TO @INC
+my $projectPath = '';
+BEGIN {
+	use File::Basename qw();
+	my $folderProjectName = 'PERFORACIONES';
+	my ($name, $path, $suffix) = File::Basename::fileparse($0);
+	my @dir = split('/',$path);
+	for (my $i = 0; $i < @dir; $i++ ) {$projectPath = "$projectPath$dir[$i]/";if($dir[$i] eq $folderProjectName){last}}
+}
 
 
 #LIBRERIAS
 	use strict;	
 	use Redis;
 	#	
-	use lib '/';	
+	use lib "$projectPath";	
 	use PERF_CONFIG;												#CONFIGURACION EN EL SERVIDOR
 	#					
 	use lib "$PERF_CONFIG::spx_process_error_perf_test";													
@@ -66,7 +74,7 @@
 		#
 		#
 	##OTRAS
-		my $redis=Redis->new(server => '192.168.0.8:6379', debug => 0);				# CONNECT TO REDIS
+		my $redis=Redis->new(server => $PERF_CONFIG::rdServer, debug => 0);				# CONNECT TO REDIS
 		my $SCAN;							# VERIABLE CON LOS DATALOGGERS A SCANEAR
 
 ########################## MAIN PROGRAM ################################
