@@ -13,3 +13,4 @@ call_error_perf_test.pl
 call_spx_process_perf.pl
 
 #
+PERF_CONFIG.pm
