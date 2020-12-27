@@ -19,6 +19,9 @@ BEGIN {
 	#
 	use lib "$PERF_CONFIG::Library_PERF";												
 	use Library_PERF;										#BIBLIOTECA DE LAS PERFORACIONES	
+	#
+	use Log::Handler;
+	my $log = Log::Handler->new();
  
 BEGIN {
   use Exporter ();
@@ -212,7 +215,7 @@ sub process_perf
 	no_execution();
 	fecha_system();
 	open_file();
-	print FILE1 "TYPE => $TYPE.\n"; 	# DEBUG
+	openLog();
 	read_redis();
 	chequeo_alarmas();
 	main();
@@ -2476,6 +2479,7 @@ sub spx_log
 	#$print_log = 'OK';
 
 	my $logStr = $_[0];
+	$log->info("[processPerf] [$DLGID_PERF] $_[0]");
 
 	print FILE1 "$logStr\n";
 	
@@ -3135,6 +3139,21 @@ sub open_file
 		#
 } 
 
+######################## LOG WRITING ###########################
+sub openLog {
+	# function for create and open a log file with debug level
+	
+	
+	$log->add(
+		file => {
+			filename => "$PERF_CONFIG::fileLogPath",
+			maxlevel => "debug",
+			minlevel => "warning",
+			mode     => 'append',
+			newline  => 1,
+		}
+	);
+}
 ################## DETECTA FECHA Y HORA DEL SISTEMA ####################
 sub fecha_system
 # GUARDA EN LA VARIABLE $CURR_FECHA_SYSTEM LA FECHA Y HORA DEL SISTEMA
