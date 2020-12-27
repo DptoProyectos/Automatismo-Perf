@@ -216,7 +216,7 @@ sub process_perf
 	call_detection($TYPE);
 	no_execution();
 	fecha_system();
-	open_file();
+	#open_file();
 	read_redis();
 	chequeo_alarmas();
 	main();
@@ -380,7 +380,7 @@ sub main
 										else
 										{
 											spx_log('		command error in FT');
-											print FILE1 "MAIN => command error in FT\n";
+											#print FILE1 "MAIN => command error in FT\n";
 										}
 										#
 									}
@@ -426,7 +426,7 @@ sub main
 										else
 										{
 											spx_log('		command error in FT');
-											print FILE1 "MAIN => command error in FT\n";
+											#print FILE1 "MAIN => command error in FT\n";
 										}
 										#
 									}
@@ -458,7 +458,7 @@ sub main
 					else 
 					{
 						spx_log('		command error in ERR_SENSOR_TQ');
-						print FILE1 "MAIN => command error in ERR_SENSOR_TQ\n";
+						#print FILE1 "MAIN => command error in ERR_SENSOR_TQ\n";
 					}
 				}
 				elsif ($TQ_TX_ERROR eq 'SI')
@@ -474,7 +474,7 @@ sub main
 				else
 				{
 					spx_log('		command error in TQ_TX_ERROR');
-					print FILE1 "MAIN => command error in TQ_TX_ERROR\n";
+					#print FILE1 "MAIN => command error in TQ_TX_ERROR\n";
 				}
 			}
 			elsif ($SW1 eq "BOYA")
@@ -498,14 +498,14 @@ sub main
 			else
 			{
 				spx_log('		command error in SW1');
-				print FILE1 "MAIN => command error in SW1\n";
+				#print FILE1 "MAIN => command error in SW1\n";
 			}
 		
 		}
 		else
 		{
 			spx_log('		command error in LM');
-			print FILE1 "MAIN => command error in LM\n";
+			#print FILE1 "MAIN => command error in LM\n";
 		}
 		
 
@@ -843,7 +843,7 @@ sub chequeo_alarmas
 	else
 	{
 		spx_log('		command error in GA');
-		print FILE1 "CHEQUEO_ALARMAS => command error in GA\n";
+		#print FILE1 "CHEQUEO_ALARMAS => command error in GA\n";
 		$GABINETE_ABIERTO = 'NO';
 	}
 	
@@ -860,7 +860,7 @@ sub chequeo_alarmas
 	else
 	{
 		spx_log('		command error in FE');
-		print FILE1 "CHEQUEO_ALARMAS => command error in FE\n";
+		#print FILE1 "CHEQUEO_ALARMAS => command error in FE\n";
 		$FALLA_ELECTRICA = 'NO';
 	}
 		#
@@ -928,7 +928,7 @@ sub chequeo_alarmas
 		else
 		{
 			spx_log('		command error in FT');
-			print FILE1 "VISUAL => command error in FT\n";
+			#print FILE1 "VISUAL => command error in FT\n";
 			$FALLA_TERMICA = "NO";
 		}
 			#
@@ -995,7 +995,7 @@ sub modo_remoto
 		else
 		{
 			spx_log('		command error in SW3');
-			print FILE1 "MODO_REMOTO => command error in SW3\n";
+			#print FILE1 "MODO_REMOTO => command error in SW3\n";
 		}
 		#
 	}
@@ -1009,7 +1009,7 @@ sub modo_remoto
 	else
 	{
 		spx_log('		command error in SW2');
-		print FILE1 "MODO_REMOTO => command error in SW2\n";
+		#print FILE1 "MODO_REMOTO => command error in SW2\n";
 	}
 	
 	
@@ -1346,7 +1346,7 @@ sub chequeo_sensor
 							else
 							{
 								spx_log('		command error in ERR_SENSOR_'."$suffix");
-								print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
+								#print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
 							}
 						}
 						else
@@ -1418,7 +1418,7 @@ sub chequeo_sensor
 			else
 			{
 				spx_log('		command error in M_ERR_SENSOR_'."$suffix");
-				print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
+				#print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
 			}
 				#
 				#
@@ -1554,7 +1554,7 @@ sub control_sistema
 		else
 		{
 			spx_log('		command error in FT');
-			print FILE1 "CONTROL_SISTEMA => command error in FT\n";
+			#print FILE1 "CONTROL_SISTEMA => command error in FT\n";
 		}
 		#		
 		# GUARDO QUE EL TANQUE COMIENZA UN PROCESO DE LLENADO
@@ -1606,13 +1606,13 @@ sub control_sistema
 				else
 				{
 					spx_log('		command error in FT');
-					print FILE1 "CONTROL_SISTEMA => command error in FT\n";
+					#print FILE1 "CONTROL_SISTEMA => command error in FT\n";
 				}
 		}
 		else
 		{
 			spx_log('		command error in tq_state');
-			print FILE1 "CONTROL_SISTEMA => command error in tq_state\n";
+			#print FILE1 "CONTROL_SISTEMA => command error in tq_state\n";
 		}
 		
 	}
@@ -2483,7 +2483,7 @@ sub spx_log
 	my $logStr = $_[0];
 	$log->info("[processPerf] [$DLGID_PERF] $_[0]");				# write a log file
 
-	print FILE1 "$logStr\n";
+	##print FILE1 "$logStr\n";
 	
 	if ($print_log eq "OK")
 	{
@@ -2584,7 +2584,8 @@ sub visual
 	else
 	{
 		spx_log('		command error in $BP');
-		print FILE1 "VISUAL => command error in BP\n";
+		#print FILE1 "VISUAL => command error in BP\n";
+		
 	}
 	#
 # ASIGNO EL ESTADO DE ENCENDIDO DE LA BOMBA DOSIFICADORA
@@ -2608,7 +2609,7 @@ sub visual
 		else
 		{
 			spx_log('		command error in $BD');
-			print FILE1 "VISUAL => command error in BD\n";
+			#print FILE1 "VISUAL => command error in BD\n";
 		}
 	}
 	#
@@ -3098,7 +3099,7 @@ sub flow_calc
 		else
 		{
 			spx_log('	command error in $BP');
-			print FILE1 "CALCULO_CAUDAL => command error in BP\n";
+			#print FILE1 "CALCULO_CAUDAL => command error in BP\n";
 		}
 		
 	}
@@ -3137,7 +3138,7 @@ sub open_file
 		open( FILE1, ">>$PERF_CONFIG::SCRIPT_performance"."/spx_process_perf_test_$DLGID_PERF/$DLGID_PERF-$CURR_FECHA_SHORT.txt");	
 		chmod 0777, "$PERF_CONFIG::SCRIPT_performance"."/spx_process_perf_test_$DLGID_PERF/$DLGID_PERF-$CURR_FECHA_SHORT.txt";
 		#
-		print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
+		#print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
 		#
 } 
 
@@ -3216,7 +3217,7 @@ sub read_dlg_data
 		else
 		{
 			my $line = $redis->hget( $DLGID, 'LINE' );
-			print FILE1 "LINE => [$DLGID] $line.\n";  # DEBUG
+			#print FILE1 "LINE => [$DLGID] $line.\n";  # DEBUG
 			
 			# CHEQUEO QUE EL LINE TIENE VALORES VALIDOS
 			if ($line eq 'NUL')

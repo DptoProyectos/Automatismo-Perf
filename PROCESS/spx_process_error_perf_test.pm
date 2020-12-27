@@ -233,7 +233,7 @@ sub error_perf_test
 			else
 			{
 				spx_log('		command error in TYPE');
-				print FILE1 "MAIN => command error in TYPE\n";
+				#print FILE1 "MAIN => command error in TYPE\n";
 			}
 		}
 	}
@@ -546,19 +546,19 @@ sub undef_vars
 				chmod 0777, "$PERF_CONFIG::DLG_performance"."/$DLGID"."/error_DLG_test_$DLGID-$CURR_FECHA_SHORT.txt";
 			
 			# TXT QUE REGISTRA LA HORA DE EJECUCION DEL SCRIPT
-				my $historic_folder = "$PERF_CONFIG::SCRIPT_performance";
-				mkdir $historic_folder;
-				chmod 0777, $historic_folder;
+				#my $historic_folder = "$PERF_CONFIG::SCRIPT_performance";
+				#mkdir $historic_folder;
+				#chmod 0777, $historic_folder;
 				#
-				my $historic_folder = "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID";
-				mkdir $historic_folder;	
-				chmod 0777, $historic_folder;
+				#my $historic_folder = "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID";
+				#mkdir $historic_folder;	
+				#chmod 0777, $historic_folder;
 				#
-				open( FILE1, ">>$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt");	
-				chmod 0777, "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt";
+				#open( FILE1, ">>$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt");	
+				#chmod 0777, "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt";
 				#
 				# ESCRIBO EL ARCHIVO
-				print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
+				##print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
 	}
 
 	######################## LOG WRITING ###########################
@@ -2477,7 +2477,7 @@ sub undef_vars
 		spx_log('READ_REDIS');
 		#	
 		$TYPE = $redis->hget("$DLGID", "TYPE");			# DEBUG
-		print FILE1 "TYPE => $TYPE.\n";					# DEBUG
+		##print FILE1 "TYPE => $TYPE.\n";					# DEBUG
 		#
 	# LEO PARAMETROS SOLO SI SE TRATA DE UNA PERFORACION	
 		if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))
@@ -3451,7 +3451,7 @@ sub m_cal
 								else
 								{
 									spx_log('M_CAL => command error in EXISTS/P2');
-									print FILE1 "M_CAL => command error in EXISTS/P2\n";
+									#print FILE1 "M_CAL => command error in EXISTS/P2\n";
 								}
 							}
 						}
@@ -3501,7 +3501,7 @@ sub m_cal
 			else
 			{
 				spx_log('M_CAL => command error in EXISTS/P1');
-				print FILE1 "M_CAL => command error in EXISTS/P1\n";
+				#print FILE1 "M_CAL => command error in EXISTS/P1\n";
 			}
 		
 		# VARIABLES DE SALIDA
@@ -4197,7 +4197,7 @@ sub m_cal
 			else
 			{
 				my $line = $redis->hget( $DLGID, 'LINE' );
-				print FILE1 "LINE => [$DLGID] $line.\n";	# DEBUG
+				#print FILE1 "LINE => [$DLGID] $line.\n";	# DEBUG
 				
 				# CHEQUEO QUE EL LINE TIENE VALORES VALIDOS
 				if ($line eq 'NUL')
@@ -4618,9 +4618,9 @@ sub m_cal
 					}
 					else
 					{
-						print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
-						print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
-						print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
+						#print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
+						#print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
+						#print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
 						#
 						spx_log("$identifier => hset: error var {\$keys = $keys}");
 						spx_log("$identifier => hset: error var {\$param = $param}");
@@ -4629,9 +4629,9 @@ sub m_cal
 				}
 				else
 				{
-					print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
-					print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
-					print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
+					#print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
+					#print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
+					#print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
 					#
 					spx_log("$identifier => hset: error var {\$keys = $keys}");
 					spx_log("$identifier => hset: error var {\$param = $param}");
@@ -4640,9 +4640,9 @@ sub m_cal
 			}	
 			else
 			{
-				print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
-				print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
-				print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
+				#print FILE1 "$identifier => hset: error var {\$keys = $keys}.\n";
+				#print FILE1 "$identifier => hset: error var {\$param = $param}.\n";
+				#print FILE1 "$identifier => hset: error var {\$value = $value}.\n";
 				#
 				spx_log("$identifier => hset: error var {\$keys = $keys}");
 				spx_log("$identifier => hset: error var {\$param = $param}");
@@ -4651,9 +4651,9 @@ sub m_cal
 		}
 		else
 		{
-			print FILE1 "$identifier => hset: missing var {\$keys = $keys}.\n";
-			print FILE1 "$identifier => hset: missing var {\$param = $param}.\n";
-			print FILE1 "$identifier => hset: missing var {\$value = $value}.\n";
+			#print FILE1 "$identifier => hset: missing var {\$keys = $keys}.\n";
+			#print FILE1 "$identifier => hset: missing var {\$param = $param}.\n";
+			#print FILE1 "$identifier => hset: missing var {\$value = $value}.\n";
 			#
 			spx_log("$identifier => hset: missing var {\$keys = $keys}");
 			spx_log("$identifier => hset: missing var {\$param = $param}");
@@ -4686,8 +4686,8 @@ sub m_cal
 					}
 					else
 					{
-						print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
-						print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
+						#print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
+						#print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
 						#
 						spx_log("$identifier => hexist: error var {\$keys = $keys}");
 						spx_log("$identifier => hexist: error var {\$param = $param}");
@@ -4695,8 +4695,8 @@ sub m_cal
 				}
 				else
 				{
-					print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
-					print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
+					#print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
+					#print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
 					#
 					spx_log("$identifier => hexist: error var {\$keys = $keys}");
 					spx_log("$identifier => hexist: error var {\$param = $param}");
@@ -4704,8 +4704,8 @@ sub m_cal
 			}
 			else
 			{
-				print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
-				print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
+				#print FILE1 "$identifier => hexist: error var {\$keys = $keys}.\n";
+				#print FILE1 "$identifier => hexist: error var {\$param = $param}.\n";
 				#
 				spx_log("$identifier => hexist: error var {\$keys = $keys}");
 				spx_log("$identifier => hexist: error var {\$param = $param}");
@@ -4713,8 +4713,8 @@ sub m_cal
 		}
 		else
 		{	
-			print FILE1 "$identifier => hexist: missing var {\$keys = $keys}.\n";
-			print FILE1 "$identifier => hexist: missing var {\$param = $param}.\n";
+			#print FILE1 "$identifier => hexist: missing var {\$keys = $keys}.\n";
+			#print FILE1 "$identifier => hexist: missing var {\$param = $param}.\n";
 			#
 			spx_log("$identifier => hexist: missing var {\$keys = $keys}");
 			spx_log("$identifier => hexist: missing var {\$param = $param}");
@@ -4750,7 +4750,7 @@ sub m_cal
 							if ($out eq '')
 							{
 								$redis->hdel("$keys", "$param");
-								print FILE1 "$identifier => hget: error var {\$out = $out}.\n";
+								#print FILE1 "$identifier => hget: error var {\$out = $out}.\n";
 							}
 							else
 							{
@@ -4768,8 +4768,8 @@ sub m_cal
 					}
 					else
 					{
-						print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
-						print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
+						#print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
+						#print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
 						#
 						spx_log("$identifier => hget: error var {\$keys = $keys}");
 						spx_log("$identifier => hget: error var {\$param = $param}");
@@ -4777,8 +4777,8 @@ sub m_cal
 				}
 				else
 				{
-					print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
-					print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
+					#print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
+					#print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
 					#
 					spx_log("$identifier => hget: error var {\$keys = $keys}");
 					spx_log("$identifier => hget: error var {\$param = $param}");
@@ -4786,8 +4786,8 @@ sub m_cal
 			}
 			else
 			{
-				print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
-				print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
+				#print FILE1 "$identifier => hget: error var {\$keys = $keys}.\n";
+				#print FILE1 "$identifier => hget: error var {\$param = $param}.\n";
 				#
 				spx_log("$identifier => hget: error var {\$keys = $keys}");
 				spx_log("$identifier => hget: error var {\$param = $param}");
@@ -4795,8 +4795,8 @@ sub m_cal
 		}
 		else
 		{	
-			print FILE1 "$identifier => hget: missing var {\$keys = $keys}.\n";
-			print FILE1 "$identifier => hget: missing var {\$param = $param}.\n";
+			#print FILE1 "$identifier => hget: missing var {\$keys = $keys}.\n";
+			#print FILE1 "$identifier => hget: missing var {\$param = $param}.\n";
 			#
 			spx_log("$identifier => hget: missing var {\$keys = $keys}");
 			spx_log("$identifier => hget: missing var {\$param = $param}");
@@ -4829,8 +4829,8 @@ sub m_cal
 						}
 						else
 						{
-							print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
-							print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
+							#print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
+							#print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
 							#
 							spx_log("$identifier => hdel: error var {\$keys = $keys}");
 							spx_log("$identifier => hdel: error var {\$param = $param}");
@@ -4838,8 +4838,8 @@ sub m_cal
 					}
 					else
 					{
-						print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
-						print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
+						#print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
+						#print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
 						#
 						spx_log("$identifier => hdel: error var {\$keys = $keys}");
 						spx_log("$identifier => hdel: error var {\$param = $param}");
@@ -4847,8 +4847,8 @@ sub m_cal
 				}
 				else
 				{
-					print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
-					print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
+					#print FILE1 "$identifier => hdel: error var {\$keys = $keys}.\n";
+					#print FILE1 "$identifier => hdel: error var {\$param = $param}.\n";
 					#
 					spx_log("$identifier => hdel: error var {\$keys = $keys}");
 					spx_log("$identifier => hdel: error var {\$param = $param}");
@@ -4856,8 +4856,8 @@ sub m_cal
 			}
 			else
 			{	
-				print FILE1 "$identifier => hdel: missing var {\$keys = $keys}.\n";
-				print FILE1 "$identifier => hdel: missing var {\$param = $param}.\n";
+				#print FILE1 "$identifier => hdel: missing var {\$keys = $keys}.\n";
+				#print FILE1 "$identifier => hdel: missing var {\$param = $param}.\n";
 				#
 				spx_log("$identifier => hdel: missing var {\$keys = $keys}");
 				spx_log("$identifier => hdel: missing var {\$param = $param}");
