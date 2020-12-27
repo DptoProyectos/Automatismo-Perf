@@ -21,7 +21,7 @@ BEGIN {
 	use Library_PERF;										#BIBLIOTECA DE LAS PERFORACIONES	
 	#
 	use Log::Handler;
-	my $log = Log::Handler->new();
+	
  
 BEGIN {
   use Exporter ();
@@ -70,7 +70,7 @@ BEGIN {
 		$D_EXEC_PER_PUMP_ERROR $LOCAL_MODE $ALARM_STATE $ERROR_BOYA
 		
 		$redis $NUMERO_EJECUCION $LAST_DIA_SYSTEM $LAST_MES_SYSTEM $tq_state 
-		$boya_tq_state $CURR_FECHA_SYSTEM $CURR_FECHA_SHORT
+		$boya_tq_state $CURR_FECHA_SYSTEM $CURR_FECHA_SHORT $log
 				
 	);
 }
@@ -206,16 +206,17 @@ sub process_perf
 		$boya_tq_state;									# GUARDA EL ESTADO DEL DE LLENADO O VACIADO DEL TANQUE CUANDO SE ESTA EN MODO BOYA
 		$CURR_FECHA_SYSTEM;								# VARIABLE QUE ALMACENA LA FECHA Y HORA DEL SISTEMA
 		$CURR_FECHA_SHORT;								# VARIABLE QUE ALMACENA LA FECHA DEL SISTEMA ( SOLO FECHA )
+		$log = Log::Handler->new();
 		
 
 
 ########################### MAIN RUN ###################################
 #
+	openLog();
 	call_detection($TYPE);
 	no_execution();
 	fecha_system();
 	open_file();
-	openLog();
 	read_redis();
 	chequeo_alarmas();
 	main();
@@ -653,6 +654,7 @@ sub undef_vars
 		undef $boya_tq_state;
 		undef $CURR_FECHA_SYSTEM;
 		undef $CURR_FECHA_SHORT;	
+		undef $log;
 }
 
 ####################### DETECCION DE LLAMADO ###########################

@@ -26,7 +26,7 @@ BEGIN {
 	use Library_PERF;										#BIBLIOTECA DE LAS PERFORACIONES	
 	#
 	use Log::Handler;
-	my $log = Log::Handler->new();
+	
 
  
 BEGIN {
@@ -71,7 +71,7 @@ BEGIN {
 		$N_MAX_TQ $ERR_SENSOR_TQ $tq_level_mail_alarm $tq_count_mail_alarm
 		$cl_low_level_mail_alarm $cl_low_count_mail_alarm $cl_high_level_mail_alarm
 		$cl_high_count_mail_alarm $return_tx $outputs_change $CL_MIN_ALARM
-		$CL_MAX_ALARM $CL_ALARM_STATE $L_MIN_ALARM $L_MAX_ALARM $tq_state 
+		$CL_MAX_ALARM $CL_ALARM_STATE $L_MIN_ALARM $L_MAX_ALARM $tq_state $log
 				
 	);
 }
@@ -178,6 +178,7 @@ sub error_perf_test
 			$L_MIN_ALARM;					# SI LA ALTURA DEL TANQUE ES INFERIOR DE ESTE VALOR SE GENERA UNA ALARMA
 			$L_MAX_ALARM;					# SI LA ALTURA DEL TANQUE ES SUPERIOR A ESTE VALOR SE GENERA UNA ALARMA
 			$tq_state;						# GUARDA EL ESTADO EN EL QUE SE ENCONTRABA EL TANQUE PARA RECUPERARLO EN CASOS DE REINICIOS DEL DATALOGGER
+			$log = Log::Handler->new();
 	
 	# NOTA (OJO): Siempre que se vaya a usar una variable nueva hay que definirla como global al principio del script
 	#			 y hay que indefinirla cuando se sale del programa en la funcion undef_vars	
@@ -185,13 +186,12 @@ sub error_perf_test
 
 ############################## RUN #####################################
 	#
+	
+	openLog();
 	call_detection("$TYPE");
 	no_execution();
-	spx_log("DETECCION DE ERRORES_$DLGID");
-	spx_log('TYPE = '.$TYPE);
 	fecha_system();
 	open_file();
-	openLog();
 	read_redis();
 	pw_save(12.8,13.6,180);  #180
 	($LTQ,$LAST_FECHA_DATA)= m_cal($DLGID,$FECHA_DATA.'_'.$HORA_DATA,$LTQ,$tq_state,$TYPE);
@@ -338,6 +338,7 @@ sub undef_vars
 			undef $L_MIN_ALARM;			
 			undef $L_MAX_ALARM;		
 			undef $tq_state;
+			undef $log;
 				
 }
 	
