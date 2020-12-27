@@ -2479,7 +2479,7 @@ sub spx_log
 	#$print_log = 'OK';
 
 	my $logStr = $_[0];
-	$log->info("[processPerf] [$DLGID_PERF] $_[0]");
+	$log->info("[processPerf] [$DLGID_PERF] $_[0]");				# write a log file
 
 	print FILE1 "$logStr\n";
 	
