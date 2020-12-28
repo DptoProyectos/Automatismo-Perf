@@ -40,8 +40,8 @@ my $projectPath = '';
 BEGIN {
 	use File::Basename qw();
 	my $folderProjectName = 'PERFORACIONES';
-	my ($name, $path, $suffix) = File::Basename::fileparse($0);
-	my @dir = split('/',$path);
+	use FindBin qw( $RealBin );
+	my @dir = split('/',$RealBin);
 	for (my $i = 0; $i < @dir; $i++ ) {$projectPath = "$projectPath$dir[$i]/";if($dir[$i] eq $folderProjectName){last}}
 }
 

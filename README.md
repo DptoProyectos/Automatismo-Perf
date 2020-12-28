@@ -14,7 +14,7 @@ TASKS
 *probar que el automatismo funcione
 *descargar el sistema que esta en .0.9 para otra carpeta
 *crear y trabajar sobre el brach merge97
--comparar cada archivo:
+*comparar cada archivo:
     *Library_PERF
     *spx_process_error_perf_test   (hubo que implementar funcionalidades para seleccionar que bases de datos leer)
     *spx_process_perf
@@ -22,11 +22,19 @@ TASKS
     *call_error_perf_test
     *call_spx_process_perf
     *ext_call
+-implementar logs en makeLogs
+    *implementar un log unico manteniendo el sistema de logs anterior
+    *eliminar el sistema de logs anterior de script performance
+    -testear y comprobar el sistema nuevo
+    -eliminar el sistema de logs anterior de dlg_performance
+    
+
 
  OTHERS   
 *hacer que se pueda leer el PERF_CONFIG desde el directorio local al tener una llamada externa
 -hacer un modo debug en donde se lean los estimulos pero no se generen respuestas
 *hacer un modo LOCAL/REMOTO en donde se seleccione de donde se van a tomar los datos de los estimulos y las respuestas
+
 
 
 

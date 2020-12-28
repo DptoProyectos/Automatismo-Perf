@@ -33,16 +33,21 @@
 #
 #  En caso de que alguna de estas variables no aparezca no se ejecuta el script.
 
-
-
-	# version 1.4.4	19-09-2019
-
+# BLOCK FOR GET PROJECT PATH AND ADD IT TO @INC
+my $projectPath = '';
+BEGIN {
+	use File::Basename qw();
+	my $folderProjectName = 'PERFORACIONES';
+	use FindBin qw( $RealBin );
+	my @dir = split('/',$RealBin);
+	for (my $i = 0; $i < @dir; $i++ ) {$projectPath = "$projectPath$dir[$i]/";if($dir[$i] eq $folderProjectName){last}}
+}
 
 #LIBRERIAS
 	use strict;
 	use Redis;
 	#	
-	use lib './';	
+	use lib "$projectPath";		
 	use PERF_CONFIG;												#CONFIGURACION EN EL SERVIDOR
 	#					
 	use lib "$PERF_CONFIG::spx_process_perf";													
