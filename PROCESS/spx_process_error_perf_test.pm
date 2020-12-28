@@ -28,7 +28,6 @@ BEGIN {
 	use Log::Handler;
 	
 
- 
 BEGIN {
   use Exporter ();
   use vars qw|$VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS|;
@@ -217,7 +216,6 @@ sub error_perf_test
 		test_outputs();
 		if ($return_tx eq 'OK')
 		{
-			
 			#spx_log( 'TYPE =>'.$TYPE );
 			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))	
 			{
@@ -902,7 +900,7 @@ sub undef_vars
 			{
 				$last_fecha_data = $redis->hget("ERROR_PERF_TEST_$DLGID", 'last_fecha_data');
 			}
-			
+			#			
 		## LEO EL PARAMETRO $last_hora_data
 			### LEO SI EXISTE EL PARAMETRO
 			my $EXISTS = $redis->hexists("ERROR_PERF_TEST_$DLGID", "last_hora_data");
@@ -916,7 +914,7 @@ sub undef_vars
 			{
 				$last_hora_data = $redis->hget("ERROR_PERF_TEST_$DLGID", 'last_hora_data');
 			}
-			
+
 			#
 		## LEO EL PARAMETRO $count_error_tx
 			### LEO SI EXISTE EL PARAMETRO
@@ -934,9 +932,6 @@ sub undef_vars
 			}
 			#
 			#
-			
-		
-			
 		#VARIABLES DE ENTRADA
 		##
 		spx_log('TEST_TX_ERRORS < $DLGID = '.$DLGID);
@@ -969,7 +964,7 @@ sub undef_vars
 			if ($TYPE eq 'TQ')
 			{
 				# DIGO QUE LA TX ES CORRECTA Y PARA NO INHABILITAR LA ALARMA DE NIVEL DE LOS TANQUES
-					$return_tx = 'OK';
+				$return_tx = 'OK';
 			}
 			else
 			{
@@ -2476,7 +2471,7 @@ sub undef_vars
 	{
 		spx_log('READ_REDIS');
 		#	
-		$TYPE = $redis->hget("$DLGID", "TYPE");			# DEBUG
+		$TYPE = $redis->hget("$DLGID", "TYPE");				# DEBUG
 		##print FILE1 "TYPE => $TYPE.\n";					# DEBUG
 		#
 	# LEO PARAMETROS SOLO SI SE TRATA DE UNA PERFORACION	
@@ -2582,8 +2577,8 @@ sub undef_vars
 			
 		}
 		
-	# LEO EL PARAMETRO CL_MIN_ALARM SI EL EQUIPO TESTEADO ES UNA PERFORACION CON TANQUE O UN TANQUE
-			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'TQ'))	
+	# LEO EL PARAMETRO CL_MIN_ALARM SI EL EQUIPO TESTEADO ES UNA PERFORACION CON TANQUE O UNA PERFORACION SIN TANQUE
+			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))	
 			{
 				###LEO SI EXISTE EL PARAMETRO
 				my $EXISTS = $redis->hexists("$DLGID", "CL_MIN_ALARM");
@@ -2602,8 +2597,8 @@ sub undef_vars
 				}
 			}
 			#
-	# LEO EL PARAMETRO CL_MAX_ALARM SI EL EQUIPO TESTEADO ES UNA PERFORACION CON TANQUE O UN TANQUE
-			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'TQ'))	
+	# LEO EL PARAMETRO CL_MAX_ALARM SI EL EQUIPO TESTEADO ES UNA PERFORACION CON TANQUE O UNA PERFORACION SIN TANQUE
+			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))	
 			{
 				###LEO SI EXISTE EL PARAMETRO
 				my $EXISTS = $redis->hexists("$DLGID", "CL_MAX_ALARM");
@@ -2773,7 +2768,6 @@ sub undef_vars
 			#
 			#
 			#PRINT_RESULT
-			#~ spx_log ("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 			#~ spx_log ("DO_0 = $DO_0");
 			#~ spx_log ("DO_1 = $DO_1");
 			#~ spx_log ("DO_2 = $DO_2");
@@ -3768,7 +3762,6 @@ sub m_cal
 						#print "LTQ = $LTQ\n";
 						#print "L_MIN_ALARM = $L_MIN_ALARM\n";	
 						# HABILITO NUEVAMENTE EL ENVIO DE MAIL CUANDO LA ALTURA DEL TANQUE PASO LOS 20 CM DEL NIVEL MINIMO DE ALARMA
-						
 						if ($LTQ > ($L_MIN_ALARM + 0.15))
 						{
 							$tq_level_mail_alarm = 'NO';
@@ -3914,6 +3907,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
+										#$emailBody .= "##### ESTE MAIL ES UNA PRUEBA #####\n";
 									&sendEmail($emailSubject,$emailAddr_perf,$emailBody); 
 							
 										$cl_low_level_mail_alarm = 'SI';
@@ -4020,6 +4014,7 @@ sub m_cal
 										$emailBody .= "\n";
 										$emailBody .= "\n";
 										$emailBody .= "\n";
+										#$emailBody .= "##### ESTE MAIL ES UNA PRUEBA #####\n";
 									&sendEmail($emailSubject,$emailAddr_perf,$emailBody);
 							
 										$cl_high_level_mail_alarm = 'SI';
