@@ -92,15 +92,21 @@ BEGIN {
 			print "NO EXISTE EN REDIS EL KEYS PERFORACIONES_DLG_ERROR_TEST => SCAN\n";
 		}
 		#print "$SCAN\n";
-		my @params = split(/;/,$SCAN);
-		#print "@params\n";
-		my $i;
-		for($i = 0; $i < @params; $i++) 
-		{
-			$DLGID = $params[$i];
-			print "RUN => 	$DLGID\n";
-			error_perf_test ($print_log,$DLGID,$SWITCH_OUTPUTS,$TEST_OUTPUTS,$EVENT_DETECTION,$test_emergency_system,$TEST_SOURCE,$TYPE);
+		if ($SCAN eq ''){
+			print "NO HAY DATALOGGER A TESTEAR EN LA VARIABLE SCAN\n";
 		}
+		else{
+			my @params = split(/;/,$SCAN);
+			#print "@params\n";
+			my $i;
+			for($i = 0; $i < @params; $i++) 
+			{
+				$DLGID = $params[$i];
+				print "RUN => 	$DLGID\n";
+				error_perf_test ($print_log,$DLGID,$SWITCH_OUTPUTS,$TEST_OUTPUTS,$EVENT_DETECTION,$test_emergency_system,$TEST_SOURCE,$TYPE);
+			}
+		}
+		
 		
 exit 0;
 
