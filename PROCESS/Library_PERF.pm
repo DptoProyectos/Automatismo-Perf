@@ -24,21 +24,6 @@ BEGIN {
   %EXPORT_TAGS = ( ); 
  }
 
-	# version 1.4.6	30-07-2020 
-
-	# -------------------CONTROL DE VERSIONES---------------------------
-	#
-	#	1.4.3	27-08-2019
-	#   Se implementaron las funciones BD_connect, read_MySQL, update_PARAM y write_MySQL
-	
-	#	1.4.3	18-09-2019
-	#	Se implemento la funcion read_PARAM
-	#
-	#
-	#-------------------------------------------------------------------
-
-
-
 	
 
 
@@ -147,7 +132,6 @@ sub read_MySQL
 		#print 'sth0 = '."$sth0"."\n";
 		my $rows = $sth0->execute();	
 		my @row0 = $sth0->fetchrow_array();
-		
 		#
 	# OBTENGO LA LECTURA
 		my $out = $row0[0];
@@ -182,7 +166,7 @@ sub BD_connect
 		my $host= $PERF_CONFIG::host;
 		my $dbase= $PERF_CONFIG::dbase;
 		#my $datasource="DBI:mysql:database=$dbase;host=$host";
-		my $datasource="DBI:Pg:database=$dbase;host=$host";
+		my $datasource="DBI:$PERF_CONFIG::dbType:database=$dbase;host=$host";
 		my $DBH;
 		
 	# MySQL CONFIG
