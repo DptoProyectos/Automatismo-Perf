@@ -45,7 +45,7 @@ BEGIN {
 		$SW1 $SW2 $SW3	
 			
 		$DLGID_PERF	$TYPE $print_log $DLGID_TQ $H_MAX_TQ $N_MAX_TQ $M_ERR_SENSOR_PERF
-		$M_ERR_SENSOR_TQ $P_MAX_PERF $TPOLL_CAU 
+		$M_ERR_SENSOR_TQ $P_MAX_PERF $TPOLL_CAU $MAGPP
 		 
 				
 		$LMIN_TQ $LMAX_TQ $L_MIN_ALARM $L_MAX_ALARM 
@@ -70,7 +70,7 @@ BEGIN {
 		$D_EXEC_PER_PUMP_ERROR $LOCAL_MODE $ALARM_STATE $ERROR_BOYA
 		
 		$redis $NUMERO_EJECUCION $LAST_DIA_SYSTEM $LAST_MES_SYSTEM $tq_state 
-		$boya_tq_state $CURR_FECHA_SYSTEM $CURR_FECHA_SHORT $log
+		$boya_tq_state $CURR_FECHA_SYSTEM $CURR_FECHA_SHORT $log $typeFirmware
 				
 	);
 }
@@ -102,10 +102,8 @@ sub process_perf
 		$M_ERR_SENSOR_PERF = $_[6];							# SETEO MANUAL DE ERROR EN EL SENSOR DE LA PERFORACION { SI|NO }
 		$M_ERR_SENSOR_TQ = $_[7];							# SETEO MANUAL DE ERROR EN EL SENSOR DEL TANQUE { SI|NO }
 		$P_MAX_PERF = $_[8];								# MAXIMA PRESION DE IMPULSION DE LA PERFORACION PARA CASOS EN QUE HAYA SENSOR DE PRESION
-		#$CL_LIBRE_OFFSET = $_[9];							# VALOR DE OFFSET DEL CLORO LIBRE EN CASO QUE TENGA MEDIDOR DE CLORO
-		
 		$TPOLL_CAU = $_[9];									# TIEMPO EN MINUTOS DEL POLEO DEL CAUDAL EN CASO DE QUE HAYA CAUDALIMETRO CONECTADO
-		#$MAGPP = $_[11];									#  MAGITUD QUE IDENTIFICA CUANTOS METROS CUBICOS REPRESENTAN UN PULSO {0.001 => 10 l (0.01 m3) | 0.01 => 100 l (0.1 m3) | 0.1 => 1000 l (1 m3)}
+		$MAGPP = $_[10];									#  MAGITUD QUE IDENTIFICA CUANTOS METROS CUBICOS REPRESENTAN UN PULSO {0.001 => 10 l (0.01 m3) | 0.01 => 100 l (0.1 m3) | 0.1 => 1000 l (1 m3)}
 		#													# SOLO SE CONFIGURA EN CASO DE CAUDALIMETRO
 		#
 		#
@@ -216,7 +214,6 @@ sub process_perf
 	call_detection($TYPE);
 	no_execution();
 	fecha_system();
-	#open_file();
 	read_redis();
 	chequeo_alarmas();
 	main();
@@ -271,7 +268,6 @@ sub main
 		##  Se llama la funcion para que se declare error en el sensor cuando vengas 2 muestras fallidas. Se recupera el error
 		## cuando pasaron 6 horas continuas con muestras correctas.  
 		($ERR_SENSOR_TQ, $LTQ) = chequeo_sensor($M_ERR_SENSOR_TQ, $DLGID_TQ, 'TQ', "$FECHA_DATA_TQ$HORA_DATA_TQ", $LTQ, $H_MAX_TQ, 2, 360, 0);
-		#($ERR_SENSOR_TQ, $LTQ) = chequeo_sensor($M_ERR_SENSOR_TQ, $DLGID_TQ, 'TQ', "$FECHA_DATA_TQ$HORA_DATA_TQ", $LTQ, $H_MAX_TQ, 2, 6, 0);
 		#
 		#
 	# HACEMOS QUE CUANDO LA PERFORACION TENGA TANQUE LEJANO EL AUTOMATISMO TRABAJE CON LA PREDICCION DE DATOS
@@ -380,7 +376,6 @@ sub main
 										else
 										{
 											spx_log('		command error in FT');
-											#print FILE1 "MAIN => command error in FT\n";
 										}
 										#
 									}
@@ -426,7 +421,6 @@ sub main
 										else
 										{
 											spx_log('		command error in FT');
-											#print FILE1 "MAIN => command error in FT\n";
 										}
 										#
 									}
@@ -458,7 +452,6 @@ sub main
 					else 
 					{
 						spx_log('		command error in ERR_SENSOR_TQ');
-						#print FILE1 "MAIN => command error in ERR_SENSOR_TQ\n";
 					}
 				}
 				elsif ($TQ_TX_ERROR eq 'SI')
@@ -474,7 +467,6 @@ sub main
 				else
 				{
 					spx_log('		command error in TQ_TX_ERROR');
-					#print FILE1 "MAIN => command error in TQ_TX_ERROR\n";
 				}
 			}
 			elsif ($SW1 eq "BOYA")
@@ -498,14 +490,12 @@ sub main
 			else
 			{
 				spx_log('		command error in SW1');
-				#print FILE1 "MAIN => command error in SW1\n";
 			}
 		
 		}
 		else
 		{
 			spx_log('		command error in LM');
-			#print FILE1 "MAIN => command error in LM\n";
 		}
 		
 
@@ -551,9 +541,8 @@ sub undef_vars
 		undef $M_ERR_SENSOR_PERF;
 		undef $M_ERR_SENSOR_TQ;
 		undef $P_MAX_PERF;
-		#undef $CL_LIBRE_OFFSET;
 		undef $TPOLL_CAU;
-		#undef $MAGPP;
+		undef $MAGPP;
 		#
 		#
 	### CONFIGURACIONES PRESTABLECIDAS
@@ -655,6 +644,7 @@ sub undef_vars
 		undef $CURR_FECHA_SYSTEM;
 		undef $CURR_FECHA_SHORT;	
 		undef $log;
+		undef $typeFirmware;
 }
 
 ####################### DETECCION DE LLAMADO ###########################
@@ -753,10 +743,10 @@ sub undef_vars
 			spx_log('READ_VAR_IN > $N_MAX_TQ = '.$N_MAX_TQ);
 			spx_log('READ_VAR_IN > $M_ERR_SENSOR_PERF = '.$M_ERR_SENSOR_PERF);
 			spx_log('READ_VAR_IN > $M_ERR_SENSOR_TQ = '.$M_ERR_SENSOR_TQ);
-			spx_log('READ_VAR_IN > $P_MAX_PERF = '.$P_MAX_PERF);
-			#spx_log('READ_VAR_IN > $CL_LIBRE_OFFSET = '.$CL_LIBRE_OFFSET);
-			spx_log('READ_VAR_IN > $TPOLL_CAU = '.$TPOLL_CAU);
-		#	spx_log('READ_VAR_IN > $MAGPP = '.$MAGPP);
+			if($MAGPP ne 'P_MAX_PERF'){spx_log('READ_VAR_IN > $P_MAX_PERF = '.$P_MAX_PERF);}
+			if($TPOLL_CAU ne ''){spx_log('READ_VAR_IN > $TPOLL_CAU = '.$TPOLL_CAU);}
+			if($MAGPP ne ''){spx_log('READ_VAR_IN > $MAGPP = '.$MAGPP);}
+			
 	}	
 
 ############### GENERADOR DE VARIABLES DE LA REDIS #####################	
@@ -792,17 +782,24 @@ sub undef_vars
 			#### ESCRIBO LOS VALORES ENTRADOS
 				#
 				$redis->hset("$DLGID_PERF", 'TYPE', $TYPE);
-			#	$redis->hset("$DLGID_PERF", 'DLGID_PERF', $DLGID_PERF);
 				$redis->hset("$DLGID_PERF", 'DLGID_TQ', $DLGID_TQ);
 				$redis->hset("$DLGID_TQ", 'H_MAX_TQ', $H_MAX_TQ);
 				$redis->hset("$DLGID_TQ", 'N_MAX_TQ', $N_MAX_TQ);
 				$redis->hset("$DLGID_PERF", 'M_ERR_SENSOR_PERF', $M_ERR_SENSOR_PERF);
 				$redis->hset("$DLGID_TQ", 'M_ERR_SENSOR_TQ', $M_ERR_SENSOR_TQ);
 				$redis->hset("$DLGID_PERF", 'P_MAX_PERF', $P_MAX_PERF);
-			#	$redis->hset("$DLGID_PERF", 'CL_LIBRE_OFFSET', $CL_LIBRE_OFFSET);
 				$redis->hset("$DLGID_PERF", 'TPOLL_CAU', $TPOLL_CAU);
-			#	$redis->hset("$DLGID_PERF", 'MAGPP', $MAGPP);
+
+				if ($MAGPP ne ''){$redis->hset("$DLGID_PERF", 'MAGPP', $MAGPP);}
+				else{ my $EXISTS = $redis->hexists("$DLGID_PERF", "MAGPP");
+					  if ($EXISTS == 1){$redis->hdel("$DLGID_PERF", 'MAGPP');}}
+
+				if ($MAGPP ne ''){$redis->hset("$DLGID_PERF", 'TPOLL_CAU', $TPOLL_CAU);}
+				else{ my $EXISTS = $redis->hexists("$DLGID_PERF", "TPOLL_CAU");
+					  if ($EXISTS == 1){$redis->hdel("$DLGID_PERF", 'TPOLL_CAU');}}
+				
 				#
+				
 		# ------------------------------------------------------------------	
 			#
 			#
@@ -811,16 +808,15 @@ sub undef_vars
 		### VARIABLES QUE VAN EN LAS PERFORACIONES
 			#### MUESTRO LOS VALORES ESCRITOS
 				spx_log('REDIS_KEYS_GEN > TYPE = '.$TYPE);
-		#		spx_log('REDIS_KEYS_GEN > DLGID_PERF = '.$DLGID_PERF);
 				spx_log('REDIS_KEYS_GEN > DLGID_TQ = '.$DLGID_TQ);
 				spx_log('REDIS_KEYS_GEN > H_MAX_TQ = '.$H_MAX_TQ);
 				spx_log('REDIS_KEYS_GEN > N_MAX_TQ = '.$N_MAX_TQ);
 				spx_log('REDIS_KEYS_GEN > M_ERR_SENSOR_PERF = '.$M_ERR_SENSOR_PERF);
 				spx_log('REDIS_KEYS_GEN > M_ERR_SENSOR_TQ = '.$M_ERR_SENSOR_TQ);
 				spx_log('REDIS_KEYS_GEN > P_MAX_PERF = '.$P_MAX_PERF);
-		#		spx_log('REDIS_KEYS_GEN > CL_LIBRE_OFFSET = '.$CL_LIBRE_OFFSET);
-				spx_log('REDIS_KEYS_GEN > TPOLL_CAU = '.$TPOLL_CAU);
-		#		spx_log('REDIS_KEYS_GEN > MAGPP = '.$MAGPP);
+				if ($TPOLL_CAU ne ''){spx_log('REDIS_KEYS_GEN > TPOLL_CAU = '.$TPOLL_CAU);}
+				if ($MAGPP ne ''){spx_log('REDIS_KEYS_GEN > MAGPP = '.$MAGPP);}
+				
 	}
 	
 
@@ -843,7 +839,6 @@ sub chequeo_alarmas
 	else
 	{
 		spx_log('		command error in GA');
-		#print FILE1 "CHEQUEO_ALARMAS => command error in GA\n";
 		$GABINETE_ABIERTO = 'NO';
 	}
 	
@@ -860,7 +855,6 @@ sub chequeo_alarmas
 	else
 	{
 		spx_log('		command error in FE');
-		#print FILE1 "CHEQUEO_ALARMAS => command error in FE\n";
 		$FALLA_ELECTRICA = 'NO';
 	}
 		#
@@ -928,7 +922,6 @@ sub chequeo_alarmas
 		else
 		{
 			spx_log('		command error in FT');
-			#print FILE1 "VISUAL => command error in FT\n";
 			$FALLA_TERMICA = "NO";
 		}
 			#
@@ -995,7 +988,6 @@ sub modo_remoto
 		else
 		{
 			spx_log('		command error in SW3');
-			#print FILE1 "MODO_REMOTO => command error in SW3\n";
 		}
 		#
 	}
@@ -1009,7 +1001,6 @@ sub modo_remoto
 	else
 	{
 		spx_log('		command error in SW2');
-		#print FILE1 "MODO_REMOTO => command error in SW2\n";
 	}
 	
 	
@@ -1346,7 +1337,6 @@ sub chequeo_sensor
 							else
 							{
 								spx_log('		command error in ERR_SENSOR_'."$suffix");
-								#print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
 							}
 						}
 						else
@@ -1418,7 +1408,6 @@ sub chequeo_sensor
 			else
 			{
 				spx_log('		command error in M_ERR_SENSOR_'."$suffix");
-				#print FILE1 "CHEQUEO_SENSOR_ => command error in ERR_SENSOR_.$suffix\n";
 			}
 				#
 				#
@@ -1554,7 +1543,6 @@ sub control_sistema
 		else
 		{
 			spx_log('		command error in FT');
-			#print FILE1 "CONTROL_SISTEMA => command error in FT\n";
 		}
 		#		
 		# GUARDO QUE EL TANQUE COMIENZA UN PROCESO DE LLENADO
@@ -1606,13 +1594,11 @@ sub control_sistema
 				else
 				{
 					spx_log('		command error in FT');
-					#print FILE1 "CONTROL_SISTEMA => command error in FT\n";
 				}
 		}
 		else
 		{
 			spx_log('		command error in tq_state');
-			#print FILE1 "CONTROL_SISTEMA => command error in tq_state\n";
 		}
 		
 	}
@@ -1816,25 +1802,8 @@ sub read_config_var
 				$P_MAX_PERF = $redis->hget("$DLGID_PERF", "P_MAX_PERF");
 			}
 			#
-		#~ ##LEO EL PARAMETRO CL_LIBRE_OFFSET
-			#~ ###LEO SI EXISTE EL PARAMETRO
-			#~ my $EXISTS = $redis->hexists("$DLGID_PERF", "CL_LIBRE_OFFSET");
-			#~ if ($EXISTS == 0)
-			#~ #SI NO EXISTE INDICO PARA QUE SE CARGUE
-			#~ {
-				#~ spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE CL_LIBRE_OFFSET');
-				#~ #
-				#~ #
-				#~ spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
-				#~ goto quit_all
-			#~ }
-			#~ else 
-			#~ #LEO EL PARAMETRO
-			#~ {
-				#~ $CL_LIBRE_OFFSET = $redis->hget("$DLGID_PERF", "CL_LIBRE_OFFSET");
-			#~ }
-			#~ #
-		###LEO SI EXISTE EL PARAMETRO
+		##LEO EL PARAMETRO TPOLL_CAU
+			###LEO SI EXISTE EL PARAMETRO
 			my $EXISTS = $redis->hexists("$DLGID_PERF", "TPOLL_CAU");
 			if ($EXISTS == 0)
 			#SI NO EXISTE INDICO PARA QUE SE CARGUE
@@ -1842,8 +1811,8 @@ sub read_config_var
 				#spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE TPOLL_CAU');
 				#
 				#
-				#~ spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
-				#~ goto quit_all
+				#spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
+				#goto quit_all
 			}
 			else 
 			#LEO EL PARAMETRO
@@ -1851,23 +1820,23 @@ sub read_config_var
 				$TPOLL_CAU = $redis->hget("$DLGID_PERF", "TPOLL_CAU");
 			}
 			#
-		#~ ##LEO EL PARAMETRO MAGPP
-			#~ ###LEO SI EXISTE EL PARAMETRO
-			#~ my $EXISTS = $redis->hexists("$DLGID_PERF", "MAGPP");
-			#~ if ($EXISTS == 0)
-			#~ #SI NO EXISTE INDICO PARA QUE SE CARGUE
-			#~ {
-				#~ spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE MAGPP');
-				#~ #
-				#~ #
-				#~ spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
-				#~ goto quit_all
-			#~ }
-			#~ else 
-			#~ #LEO EL PARAMETRO
-			#~ {
-				#~ $MAGPP = $redis->hget("$DLGID_PERF", "MAGPP");
-			#~ }
+		##LEO EL PARAMETRO MAGPP
+			###LEO SI EXISTE EL PARAMETRO
+			my $EXISTS = $redis->hexists("$DLGID_PERF", "MAGPP");
+			if ($EXISTS == 0)
+			#SI NO EXISTE INDICO PARA QUE SE CARGUE
+			{
+				spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE MAGPP');
+				#
+				#
+				spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
+				goto quit_all
+			}
+			else 
+			#LEO EL PARAMETRO
+			{
+				$MAGPP = $redis->hget("$DLGID_PERF", "MAGPP");
+			}
 	# ------------------------------------------------------------------	
 		#
 		#
@@ -1882,13 +1851,11 @@ sub read_config_var
 	spx_log('READ CONFIG VAR > $M_ERR_SENSOR_PERF = '.$M_ERR_SENSOR_PERF);
 	spx_log('READ CONFIG VAR > $M_ERR_SENSOR_TQ = '.$M_ERR_SENSOR_TQ);
 	spx_log('READ CONFIG VAR > $P_MAX_PERF = '.$P_MAX_PERF);
-#	spx_log('READ CONFIG VAR > $CL_LIBRE_OFFSET = '.$CL_LIBRE_OFFSET);
-	if (defined $TPOLL_CAU)
-	{
-		spx_log('READ CONFIG VAR > $TPOLL_CAU = '.$TPOLL_CAU);
-	}
+	if (defined $TPOLL_CAU){spx_log('READ CONFIG VAR > $TPOLL_CAU = '.$TPOLL_CAU);}
+	if (defined $MAGPP){spx_log('READ CONFIG VAR > $MAGPP = '.$MAGPP);}
 	
-#	spx_log('READ CONFIG VAR > $MAGPP = '.$MAGPP);
+	
+	
 }		
 #
 #################### LEER EN BASE REDIS ################################
@@ -2075,7 +2042,8 @@ sub read_redis
 	##ELIMINO PARAMETROS DE CAUDAL EN CASO DE QUE EXISTA EN LA REDIS CUANDO NO HAYA UN SENSADO DEL CAUDAL DE IMPULSION DE LA BOMBA
 	if ((defined $PCAU)|(defined $ICAU))
 	{
-    ###LEO SI EXISTE EL PARAMETRO CAUDAL_IMP
+
+	###LEO SI EXISTE EL PARAMETRO CAUDAL_IMP
 		my $EXISTS = $redis->hexists("$DLGID_PERF", "CAUDAL_IMP");
 		if ($EXISTS == 0)
 		#SI NO EXISTE LO CREO CON VALOR "$CAUDAL_IMP"
@@ -2111,12 +2079,20 @@ sub read_redis
 		}
 		
 		# COMPRUEBO SI EL PARAMETRO TPOLL_CAU EXISTE
-		my $EXISTS = $redis->hexists("$DLGID_PERF", "TPOLL_CAU");
-		if ($EXISTS == 1)
+		#my $EXISTS = $redis->hexists("$DLGID_PERF", "TPOLL_CAU");
+		#if ($EXISTS == 1)
 		#SI EXISTE LO BORRO PARA QUE NO SE VISUALICE
-		{
-		$redis->hdel("$DLGID_PERF", "TPOLL_CAU");
-		}
+		#{
+		#$redis->hdel("$DLGID_PERF", "TPOLL_CAU");
+		#}
+
+		# COMPRUEBO SI EL PARAMETRO MAGPP EXISTE
+		#my $EXISTS = $redis->hexists("$DLGID_PERF", "MAGPP");
+		#if ($EXISTS == 1)
+		#SI EXISTE LO BORRO PARA QUE NO SE VISUALICE
+		#{
+		#$redis->hdel("$DLGID_PERF", "MAGPP");
+		#}
 		
 		# COMPRUEBO SI EL PARAMETRO CAUDAL_ACUM_IMP EXISTE
 		my $EXISTS = $redis->hexists("$DLGID_PERF", "CAUDAL_ACUM_IMP");
@@ -2396,7 +2372,7 @@ sub write_redis
 			$redis->hset( "$DLGID_PERF", CAUDAL_IMP => "$CAUDAL_IMP" );
 			$redis->hset( "$DLGID_PERF", TPOLL_CAU => "$TPOLL_CAU" );
 			$redis->hset( "$DLGID_PERF", CAUDAL_ACUM_IMP => "$CAUDAL_ACUM_IMP" );
-		#	$redis->hset( "$DLGID_PERF", MAGPP => "$MAGPP" );
+			$redis->hset( "$DLGID_PERF", MAGPP => "$MAGPP" );
 		}
 		###ESCRIBIR EL INDICADOR DE EXCESO DE FUNCIONAMIENTO DIARIO DE LA BOMBA DE LA PERFORACION
 			$redis->hset( "$DLGID_PERF", D_EXEC_PER_PUMP_ERROR => "$D_EXEC_PER_PUMP_ERROR" );
@@ -2584,8 +2560,6 @@ sub visual
 	else
 	{
 		spx_log('		command error in $BP');
-		#print FILE1 "VISUAL => command error in BP\n";
-		
 	}
 	#
 # ASIGNO EL ESTADO DE ENCENDIDO DE LA BOMBA DOSIFICADORA
@@ -2609,7 +2583,6 @@ sub visual
 		else
 		{
 			spx_log('		command error in $BD');
-			#print FILE1 "VISUAL => command error in BD\n";
 		}
 	}
 	#
@@ -3048,38 +3021,47 @@ sub flow_calc
 			# CHEQUEO SI PASO UN TIEMPO DE POLEO
 			if ($count_time_min_cau >= $TPOLL_CAU)
 			{
-				spx_log('TPOLL_CAU = '.$TPOLL_CAU);
-			#	spx_log('MAGPP = '.$MAGPP);
-				spx_log('count_pulses_cau = '.$count_pulses_cau);
+				spx_log('CALCULO DE CAUDAL => TPOLL_CAU = '.$TPOLL_CAU);
+			#	
+				#spx_log('count_pulses_cau = '.$count_pulses_cau);
+
 				# INICIO UN NUEVO TIEMPO DE POLEO
 				$redis->hset("$DLGID_PERF", "count_time_min_cau", 0);
 				#
-				
-				#~ # CALCULO DEL CAUDAL ANTES
-				#~ $CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 600) / $TPOLL_CAU);
-				#~ spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
-				#~ #
-				# CALCULO DEL CAUDAL AHORA
-				$CAUDAL_IMP = (($count_pulses_cau * 60) / $TPOLL_CAU);
-				spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
-				#
+				if ($typeFirmware eq 'old'){
+					# CALCULO DEL CAUDAL INSTANTANEO ANTES
+					spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE VIEJO');
+					spx_log('CALCULO DE CAUDAL => MAGPP = '.$MAGPP);
+					$CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 600) / $TPOLL_CAU);
+					spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
+				}
+				else{
+					# CALCULO DEL CAUDAL INSTANTANEO AHORA
+					spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE NUEVO');
+					$CAUDAL_IMP = (($count_pulses_cau * 60) / $TPOLL_CAU);
+					spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
+					#
+				}
 				# RESETEO EL CONTADOR DE PULSOS
 				$redis->hset("$DLGID_PERF", "count_pulses_cau", 0);
-				
 			}
 			else
 			{
 				spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP.' {SE MANTIENE}');
 			}
 			
-			#~ # CALCULO EL CAUDAL ACUMULADO ANTES
-				#~ $CAUDAL_ACUM_IMP = ($count_pulses_cau_acum * $MAGPP * 10);
-				#~ spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
-				#
-			# CALCULO EL CAUDAL ACUMULADO AHORA
-				$CAUDAL_ACUM_IMP = $count_pulses_cau_acum;
+			if ($typeFirmware eq 'old'){
+				# CALCULO EL CAUDAL ACUMULADO ANTES
+				$CAUDAL_ACUM_IMP = ($count_pulses_cau_acum * $MAGPP * 10);
 				spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
 				#
+			}
+			else{
+				# CALCULO EL CAUDAL ACUMULADO AHORA
+				$CAUDAL_ACUM_IMP = $count_pulses_cau_acum;
+				spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
+			}
+			
 			# DETECTO SI HUBO CAMBIO DE MES	
 			my $CURR_MES_SYSTEM = `date +%m`;
 			if ($CURR_MES_SYSTEM != $LAST_MES_SYSTEM)
@@ -3099,7 +3081,6 @@ sub flow_calc
 		else
 		{
 			spx_log('	command error in $BP');
-			#print FILE1 "CALCULO_CAUDAL => command error in BP\n";
 		}
 		
 	}
@@ -3138,7 +3119,6 @@ sub open_file
 		open( FILE1, ">>$PERF_CONFIG::SCRIPT_performance"."/spx_process_perf_test_$DLGID_PERF/$DLGID_PERF-$CURR_FECHA_SHORT.txt");	
 		chmod 0777, "$PERF_CONFIG::SCRIPT_performance"."/spx_process_perf_test_$DLGID_PERF/$DLGID_PERF-$CURR_FECHA_SHORT.txt";
 		#
-		#print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
 		#
 } 
 
@@ -3252,6 +3232,7 @@ sub read_dlg_data
 			if ($line =~  /\b$head/)				#spx_log ('FECHA_DATA => '."$FECHA_DATA");
 			{
 			   spx_log('READ_DLG_DATA => LINE DEL FIRMWARE NUEVO');
+			   $typeFirmware = 'new';
 			   @params = split(/;/,$line);
 			   my @value = split(/:/,$params[0]);
 			   $FECHA_DATA = $value[1];
@@ -3264,6 +3245,7 @@ sub read_dlg_data
 			else
 			{
 				spx_log('READ_DLG_DATA => LINE DEL FIRMWARE VIEJO');
+				$typeFirmware = 'old';
 				@params = split(/,/,$line);
 				my @value = split(/=/,$params[0]);
 				$FECHA_DATA = $value[1];
@@ -3271,7 +3253,6 @@ sub read_dlg_data
 				
 				# LAS VARIABLES Y LOS VALORES SE SEPARAN CON '='
 			    $second_split = '=';
-				
 			}
 					
 			for($i = 2; $i < @params; $i++) 
