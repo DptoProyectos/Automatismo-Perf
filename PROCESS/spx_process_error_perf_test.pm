@@ -529,7 +529,8 @@ sub undef_vars
 	######################## REGISTRO EN ARCHIVO ###########################
 	sub open_file
 	{
-		# SE ENCARGA DE CREAR LOS HISTORICOS DE FUNCIONAMIENTO DEL DATALOGGER
+		if($PERF_CONFIG::easyLog eq 'SI'){
+			# SE ENCARGA DE CREAR LOS HISTORICOS DE FUNCIONAMIENTO DEL DATALOGGER
 			# TXT QUE REGISTRA ERRORES EN EL AUTOMATISMO
 				my $historic_folder = "$PERF_CONFIG::DLG_performance";
 				mkdir $historic_folder;
@@ -542,21 +543,7 @@ sub undef_vars
 				#
 				open( FILE, ">>$PERF_CONFIG::DLG_performance"."/$DLGID"."/error_DLG_test_$DLGID-$CURR_FECHA_SHORT.txt");	
 				chmod 0777, "$PERF_CONFIG::DLG_performance"."/$DLGID"."/error_DLG_test_$DLGID-$CURR_FECHA_SHORT.txt";
-			
-			# TXT QUE REGISTRA LA HORA DE EJECUCION DEL SCRIPT
-				#my $historic_folder = "$PERF_CONFIG::SCRIPT_performance";
-				#mkdir $historic_folder;
-				#chmod 0777, $historic_folder;
-				#
-				#my $historic_folder = "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID";
-				#mkdir $historic_folder;	
-				#chmod 0777, $historic_folder;
-				#
-				#open( FILE1, ">>$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt");	
-				#chmod 0777, "$PERF_CONFIG::SCRIPT_performance"."/spx_process_error_perf_test_$DLGID/$DLGID-$CURR_FECHA_SHORT.txt";
-				#
-				# ESCRIBO EL ARCHIVO
-				##print FILE1 "$NUMERO_EJECUCION $CURR_FECHA_SYSTEM.\n";
+		}
 	}
 
 	######################## LOG WRITING ###########################
