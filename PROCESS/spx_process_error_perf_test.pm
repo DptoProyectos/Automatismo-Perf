@@ -213,13 +213,15 @@ sub error_perf_test
 ######################### PROGRAMA PRINCIPAL ###########################
 	sub main
 	{
+		# TESTEO EL ESTADO ACTUAL DE LAS SALIDAS
 		test_outputs();
+
 		if ($return_tx eq 'OK')
 		{
 			#spx_log( 'TYPE =>'.$TYPE );
 			if (($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF'))	
 			{
-				# TESTEO EL ESTADO ACTUAL DE LAS SALIDAS
+				
 				
 				# ALTERNO LAS SALIDAS
 				switch_outputs();
@@ -233,6 +235,7 @@ sub error_perf_test
 				spx_log('		command error in TYPE');
 				#print FILE1 "MAIN => command error in TYPE\n";
 			}
+
 		}
 	}
 	#
@@ -568,7 +571,7 @@ sub undef_vars
 	{
 		#spx_log('SWITCH_OUTPUTS');
 		# DETECTO SI ESTOY EN PRECENCIA DE UNA PERFORACION Y ESTA ACTIVADO EL SWITCH DE SALIDAS
-		if ((($TYPE eq 'PERF_AND_TQ') or ($TYPE eq 'PERF')) and ($SWITCH_OUTPUTS eq 'OK'))
+		if ($SWITCH_OUTPUTS eq 'OK')
 		{
 			spx_log('SWITCH_OUTPUTS => SE ALTERNAN LAS SALIDAS');
 			# ACTIVO UNA FORMA DE SALIDA EN BASE AL ESTADO POR EL CUAL SE ESTE TRANSITANDO
@@ -649,6 +652,9 @@ sub undef_vars
 			spx_log('SWITCH_OUTPUTS > $DO_1 = '.$DO_1);
 			spx_log('SWITCH_OUTPUTS > $DO_2 = '.$DO_2);
 			spx_log('SWITCH_OUTPUTS > $DO_3 = '.$DO_3);
+		}
+		else{
+			spx_log('SWITCH_OUTPUTS => NO HABILITADO PARA EL TESTING DE SALIDAS');	
 		}
 	}
 
