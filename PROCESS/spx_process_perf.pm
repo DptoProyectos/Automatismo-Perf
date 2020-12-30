@@ -3201,7 +3201,8 @@ sub read_dlg_data
 			
 			# CHEQUEO QUE EL LINE TIENE VALORES VALIDOS
 			if ($line eq 'NUL')
-			{
+			{	
+				spx_log('READ_DLG_DATA => LINE ='.$line);
 				spx_log('READ_DLG_DATA => LINE DEL DATALOGGER CON VALOR INVALIDO');
 				#
 				my $EXISTS = $redis->hexists("$DLGID", "LAST_LINE");

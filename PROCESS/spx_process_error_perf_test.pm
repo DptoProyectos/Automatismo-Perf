@@ -492,15 +492,15 @@ sub undef_vars
 							if (($LTQ < ($N_MAX_TQ/4)) and ($ABY < 6))        
 							{
 								spx_log("TEST_EMERGENCY_SYSTEM => FAIL");
-								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_EMERGENCY_SYSTEM> (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY).\n";
-								dlgPerformance("<ERROR_EMERGENCY_SYSTEM> (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY)");
+								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_EMERGENCY_SYSTEM > (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY).\n";
+								dlgPerformance("< ERROR_EMERGENCY_SYSTEM > (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY)");
 							}
 							# DETECTO SI LA BOYA SE ESTA DESACTIVANDO CUANDO EL NIVEL DE AGUA SUBE A 10 CM DEL NIVEL MAXIMO PERMITIDO EN EL LLENADO DEL TANQUE
 							elsif (($LTQ > ($N_MAX_TQ-0.1)) and ($ABY > 6))
 							{
 								spx_log("TEST_EMERGENCY_SYSTEM => FAIL");
-								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_EMERGENCY_SYSTEM> (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY).\n";
-								dlgPerformance("<ERROR_EMERGENCY_SYSTEM> (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY)");
+								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_EMERGENCY_SYSTEM > (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY).\n";
+								dlgPerformance("< ERROR_EMERGENCY_SYSTEM > (N_MAX_TQ / LTQ / BOYA_STATE) =>  ($N_MAX_TQ / $LTQ / $ABY)");
 							}
 							else
 							{
@@ -755,32 +755,32 @@ sub undef_vars
 						if ( $GA == 1 )
 						{
 							spx_log('DETECCION DE EVENTOS => PUERTA DEL GABINETE ABIERTA');
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> PUERTA DEL GABINETE ABIERTA.\n";
-							dlgPerformance("<EVENT_DETECTION> PUERTA DEL GABINETE ABIERTA");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > PUERTA DEL GABINETE ABIERTA.\n";
+							dlgPerformance("< EVENT_DETECTION > PUERTA DEL GABINETE ABIERTA");
 						}
 						#
 						# DETECTO CUANDO PASARON A MODO LOCAL
 						if ( $LM == 1 )
 						{
 							spx_log('DETECCION DE EVENTOS => TRABAJO EN MODO LOCAL');
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> TRABAJO EN MODO LOCAL.\n";
-							dlgPerformance("<EVENT_DETECTION> TRABAJO EN MODO LOCAL");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > TRABAJO EN MODO LOCAL.\n";
+							dlgPerformance("< EVENT_DETECTION > TRABAJO EN MODO LOCAL");
 						}
 						#
 						# DETECTO CUANDO HAY FALLA ELECTRICA
 						if ( $FE == 1 )
 						{
 							spx_log('DETECCION DE EVENTOS => FALLA ELECTRICA');
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> FALLA ELECTRICA.\n";
-							dlgPerformance("<EVENT_DETECTION> FALLA ELECTRICA");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > FALLA ELECTRICA.\n";
+							dlgPerformance("< EVENT_DETECTION > FALLA ELECTRICA");
 						}
 						#
 						# DETECTO CUANDO HAY FALLA TERMICA 1
 						if ( $FT == 1 )
 						{
 							spx_log('DETECCION DE EVENTOS => FALLA TERMICA 1');
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> FALLA TERMICA 1.\n";
-							dlgPerformance("<EVENT_DETECTION> FALLA TERMICA 1");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > FALLA TERMICA 1.\n";
+							dlgPerformance("< EVENT_DETECTION > FALLA TERMICA 1");
 						}
 						#
 						if (defined $ERROR_SENSOR_PERF)
@@ -789,8 +789,8 @@ sub undef_vars
 							if ( $ERROR_SENSOR_PERF eq 'SI' )
 							{
 								spx_log('DETECCION DE EVENTOS => ERROR EN EL SENSOR DE LA PERFORACION');
-								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> ERROR EN EL SENSOR DE LA PERFORACION.\n";
-								dlgPerformance("<EVENT_DETECTION> ERROR EN EL SENSOR DE LA PERFORACION");
+								print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > ERROR EN EL SENSOR DE LA PERFORACION.\n";
+								dlgPerformance("< EVENT_DETECTION > ERROR EN EL SENSOR DE LA PERFORACION");
 							}
 						}
 						
@@ -806,8 +806,8 @@ sub undef_vars
 						{
 							my $value_error_sensor_TQ = $redis->hget($DLGID, 'value_error_sensor_TQ');
 							spx_log("DETECCION DE EVENTOS => ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ]");
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <EVENT_DETECTION> ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ].\n";
-							dlgPerformance("<EVENT_DETECTION> ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ]");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < EVENT_DETECTION > ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ].\n";
+							dlgPerformance("< EVENT_DETECTION > ERROR EN EL SENSOR DEL TANQUE [sens_val_error = $value_error_sensor_TQ]");
 						}
 					}
 					else
@@ -971,8 +971,8 @@ sub undef_vars
 					if ($count_error_tx >= 10)		#10
 					{
 						# IMPRIMO QUE EL EQUIPO LLEVA MAS DE 15 MIN CAIDO
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <MAS DE 10 MIN CAIDO> (BAT = $BAT).\n";
-							dlgPerformance("<MAS DE 10 MIN CAIDO> (BAT = $BAT)");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < MAS DE 10 MIN CAIDO > (BAT = $BAT).\n";
+							dlgPerformance("< MAS DE 10 MIN CAIDO > (BAT = $BAT)");
 							#
 						# RETORNO QUE HUBO UN ERROR DE TX
 							$error_ES_count = 0;
@@ -991,8 +991,8 @@ sub undef_vars
 							$TX_ERROR = 'NO';
 							#
 						# IMPRIMO QUE SE ACTIVO EL ERROR TX
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_TX> (BAT = $BAT).\n";
-							dlgPerformance("<ERROR_TX> (BAT = $BAT)");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_TX > (BAT = $BAT).\n";
+							dlgPerformance("< ERROR_TX > (BAT = $BAT)");
 							spx_log('TEST_TX_ERRORS => INCREMENTO CONTADOR : '.$count_error_tx);
 					}
 				}
@@ -1005,8 +1005,8 @@ sub undef_vars
 						$TX_ERROR = 'NO';
 						#
 					# IMPRIMO QUE SE ACTIVO EL ERROR TX
-						print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_TX> (BAT = $BAT).\n";
-						dlgPerformance("<ERROR_TX> (BAT = $BAT)");
+						print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_TX > (BAT = $BAT).\n";
+						dlgPerformance("< ERROR_TX > (BAT = $BAT)");
 						#
 				}
 			}
@@ -1019,8 +1019,8 @@ sub undef_vars
 					if ($count_error_tx >= 18)
 					{
 						# IMPRIMO QUE EL EQUIPO LLEVA MAS DE 15 MIN CAIDO
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <MAS DE 18 MIN CAIDO> (BAT = $BAT).\n";
-							dlgPerformance("<MAS DE 18 MIN CAIDO> (BAT = $BAT)");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < MAS DE 18 MIN CAIDO > (BAT = $BAT).\n";
+							dlgPerformance("< MAS DE 18 MIN CAIDO > (BAT = $BAT)");
 							#
 						# RETORNO QUE HUBO UN ERROR DE TX
 							$error_ES_count = 0;
@@ -1041,8 +1041,8 @@ sub undef_vars
 						# IMPRIMO QUE SE ACTIVO EL ERROR TX SI NO SE ESTA TRABAJANDO EN DISCRETO
 						if ($flag_tdial == 0)
 						{
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_TX> (BAT = $BAT).\n";
-							dlgPerformance("<ERROR_TX> (BAT = $BAT)");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_TX > (BAT = $BAT).\n";
+							dlgPerformance("< ERROR_TX > (BAT = $BAT)");
 						}
 						
 							spx_log('TEST_TX_ERRORS => INCREMENTO CONTADOR : '.$count_error_tx);
@@ -1059,8 +1059,8 @@ sub undef_vars
 					# IMPRIMO QUE SE ACTIVO EL ERROR TX SI NO SE ESTA TRABAJANDO EN DISCRETO
 						if ($flag_tdial == 0)
 						{
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_TX> (BAT = $BAT).\n";
-							dlgPerformance("<ERROR_TX> (BAT = $BAT)");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_TX > (BAT = $BAT).\n";
+							dlgPerformance("< ERROR_TX > (BAT = $BAT)");
 						}
 				}
 			}
@@ -1075,8 +1075,8 @@ sub undef_vars
 					# Solo muestro el log de error ERROR_TX
 					{
 					# IMPRIMO QUE SE ACTIVO EL ERROR TX
-						print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_TX> (BAT = $BAT).\n";
-						dlgPerformance("<ERROR_TX> (BAT = $BAT)");
+						print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_TX > (BAT = $BAT).\n";
+						dlgPerformance("< ERROR_TX > (BAT = $BAT)");
 					}
 					# Veo si paso un tiempo mayor a tpoll para dar que hubo error tx
 					else
@@ -1088,8 +1088,8 @@ sub undef_vars
 							if ($count_error_tx >= $count_limit)
 							{
 								# IMPRIMO QUE EL EQUIPO LLEVA MAS DE 15 MIN CAIDO
-									print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <MAS DE $count_limit MIN CAIDO> (BAT = $BAT).\n";
-									dlgPerformance("<MAS DE $count_limit MIN CAIDO> (BAT = $BAT)");
+									print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < MAS DE $count_limit MIN CAIDO > (BAT = $BAT).\n";
+									dlgPerformance("< MAS DE $count_limit MIN CAIDO > (BAT = $BAT)");
 									#
 								# RETORNO QUE HUBO UN ERROR DE TX
 									$error_ES_count = 0;
@@ -1131,8 +1131,8 @@ sub undef_vars
 			if (($last_fecha_data == $FECHA_DATA) and ($last_hora_data == $HORA_DATA))
 			{
 				spx_log("TEST_TX_ERRORS => RCT ERROR");
-				print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <RTC ERROR> (BAT = $BAT).\n";
-				dlgPerformance("<RTC ERROR> (BAT = $BAT)");
+				print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < RTC ERROR > (BAT = $BAT).\n";
+				dlgPerformance("< RTC ERROR > (BAT = $BAT)");
 			}
 			else
 			{
@@ -1299,21 +1299,21 @@ sub undef_vars
 										spx_log("TEST OUTPUTS => OUTPUTS FAIL");
 											#
 										# IMPRIMO EN TXT EL ERROR
-											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
+											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1338,21 +1338,21 @@ sub undef_vars
 									{
 										spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 										# IMPRIMO EN TXT EL ERROR
-											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
+											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1378,21 +1378,21 @@ sub undef_vars
 									{
 										spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 										# IMPRIMO EN TXT EL ERROR
-											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
+											#print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => DO_3 = $DO_3, DO_2 = $DO_2, DO_1 = $DO_1, DO_0 = $DO_0 <=> BD = $BD, BP = $BP, FT = $FT).\n";
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1421,18 +1421,18 @@ sub undef_vars
 										# IMPRIMO EN TXT EL ERROR
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT)");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1461,8 +1461,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1485,8 +1485,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, BY = $BY )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1513,8 +1513,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1535,8 +1535,8 @@ sub undef_vars
 											else
 											{
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_3 DO_2 DO_1 DO_0) = ($DO_3 $DO_2 $DO_1 $DO_0) <=> BD = $BD, BP = $BP, FT = $FT, TM = $TM )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1573,18 +1573,18 @@ sub undef_vars
 										# IMPRIMO EN TXT EL ERROR
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT )");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1613,18 +1613,18 @@ sub undef_vars
 										# IMPRIMO EN TXT EL ERROR
 											if (defined $BY)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
 											}
 											elsif (defined $TM)
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
 											}
 											else
 											{
-												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT ).\n";
-												dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT )");
+												print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT ).\n";
+												dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT )");
 											}
 											#
 										# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
@@ -1654,8 +1654,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
-													dlgperformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
+													dlgperformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1678,8 +1678,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, BY = $BY )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1706,8 +1706,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -1730,8 +1730,8 @@ sub undef_vars
 												spx_log("TEST_OUTPUTS => OUTPUTS FAIL");
 												
 												# IMPRIMO EN TXT EL ERROR
-													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
-													dlgPerformance("<ERROR_E/S> => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
+													print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM ).\n";
+													dlgPerformance("< ERROR_E/S > => (DO_1 DO_0) = ($DO_1 $DO_0) <=> BP = $BP, FT = $FT, TM = $TM )");
 													#
 												# MANDO A REINICIAR EL DATALOGGER, EL MISMO NO REINICIA HASTA LLAMAR TRES VECES ESTA FUNCION
 													#reset_DLG();
@@ -2854,8 +2854,8 @@ sub pw_save
 							#
 						# SE SETEA EL TDIAL A 900
 							update_PARAM($DLGID,'GENERAL','TDIAL',900);
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <PW_SAVE> SE PASA EL SISTEMA A MODO DISCRETO { bt = $bt }\n";
-							dlgPerformance("<PW_SAVE> SE PASA EL SISTEMA A MODO DISCRETO { bt = $bt }");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < PW_SAVE > SE PASA EL SISTEMA A MODO DISCRETO { bt = $bt }\n";
+							dlgPerformance("< PW_SAVE > SE PASA EL SISTEMA A MODO DISCRETO { bt = $bt }");
 							#
 						# SE SETEA EL PWRS_MODO A 0 POR PRECAUCION
 							update_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
@@ -2923,8 +2923,8 @@ sub pw_save
 							#
 						# SE SETEA EL TDIAL A 0
 							update_PARAM($DLGID,'GENERAL','TDIAL',0);
-							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) <PW_SAVE> SE PASA EL SISTEMA A MODO CONTINUO { bt = $bt }\n";
-							dlgPerformance("<PW_SAVE> SE PASA EL SISTEMA A MODO CONTINUO { bt = $bt }");
+							print FILE "$CURR_FECHA_SYSTEM - ($FECHA_DATA-$HORA_DATA) < PW_SAVE > SE PASA EL SISTEMA A MODO CONTINUO { bt = $bt }\n";
+							dlgPerformance("< PW_SAVE > SE PASA EL SISTEMA A MODO CONTINUO { bt = $bt }");
 							#
 						# SE SETEA EL PWRS_MODO A 0 POR PRECAUCION
 							update_PARAM($DLGID,'GENERAL','PWRS_MODO',0);
