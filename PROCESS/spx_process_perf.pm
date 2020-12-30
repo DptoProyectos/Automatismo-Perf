@@ -1826,11 +1826,11 @@ sub read_config_var
 			if ($EXISTS == 0)
 			#SI NO EXISTE INDICO PARA QUE SE CARGUE
 			{
-				spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE MAGPP');
+				#spx_log('READ CONFIG VAR => NO EXISTE LA VARIABLE MAGPP');
 				#
 				#
-				spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
-				goto quit_all
+				#spx_log('READ CONFIG VAR => NO SE EJECUTA EL SCRIPT');
+				#goto quit_all
 			}
 			else 
 			#LEO EL PARAMETRO
