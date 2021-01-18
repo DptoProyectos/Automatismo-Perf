@@ -3033,7 +3033,7 @@ sub flow_calc
 						# CALCULO DEL CAUDAL INSTANTANEO ANTES
 						spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE VIEJO');
 						spx_log('CALCULO DE CAUDAL => MAGPP = '.$MAGPP);
-						$CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 600) / $TPOLL_CAU);
+						$CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 60) / $TPOLL_CAU);
 						spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
 					}
 					else{
