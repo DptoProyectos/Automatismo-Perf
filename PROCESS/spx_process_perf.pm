@@ -2994,15 +2994,12 @@ sub flow_calc
 				$count_pulses_cau = $redis->hget("$DLGID_PERF", 'count_pulses_cau');
 				$count_pulses_cau = $count_pulses_cau + $PCAU;
 				$redis->hset("$DLGID_PERF", "count_pulses_cau", $count_pulses_cau);
-				#~ spx_log('count_pulses_cau'.$count_pulses_cau);
-				
-				
+											
 			# GUARDO LOS PULSOS PARA CALCULO DE CAUDAL ACUMULADO
 				$count_pulses_cau_acum = $redis->hget("$DLGID_PERF", 'count_pulses_cau_acum');
 				$count_pulses_cau_acum = $count_pulses_cau_acum + $PCAU;
 				$redis->hset("$DLGID_PERF", "count_pulses_cau_acum", $count_pulses_cau_acum);
-				#~ spx_log('count_pulses_cau_acum = '.$count_pulses_cau_acum);
-			
+							
 			# INCREMENTO EL CONTADOR DE 15s DEL POLEO DEL CAUDAL
 			$redis->hincrby("$DLGID_PERF", 'count_time_15seg_cau', 1);
 			# LEO EL PARAMETRO
@@ -3030,16 +3027,31 @@ sub flow_calc
 					$redis->hset("$DLGID_PERF", "count_time_min_cau", 0);
 					#
 					if ($typeFirmware eq 'old'){
-						# CALCULO DEL CAUDAL INSTANTANEO ANTES
-						spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE VIEJO');
-						spx_log('CALCULO DE CAUDAL => MAGPP = '.$MAGPP);
-						$CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 60) / $TPOLL_CAU);
-						spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
+						# CALCULO DE CAUDAL PARA FIRMWARE VIEJO
+						if (not $MAGPP eq ''){
+							# VERSION DE FIRMWARE QUE NO MULTIPLICA EL MAGPP
+							spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE VIEJO');
+							spx_log('CALCULO DE CAUDAL => MAGPP = '.$MAGPP);
+							spx_log('CALCULO DE CAUDAL => '.$count_pulses_cau.'m3/h ['. $count_time_min_cau.'/'.$TPOLL_CAU.']');
+							$CAUDAL_IMP = (($count_pulses_cau * $MAGPP * 60) / $TPOLL_CAU);
+							spx_log('CALCULO DE CAUDAL => CAUDAL CALCULADO CON MAGPP PRECARGADO');
+							spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
+						}
+						else{
+							# VERSION DE FIRMWARE QUE SI MULTIPLICA EL MAGPP
+							spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE VIEJO');
+							spx_log('CALCULO DE CAUDAL => '.$count_pulses_cau.'m3/h ['. $count_time_min_cau.'/'.$TPOLL_CAU.']');
+							$CAUDAL_IMP = (($count_pulses_cau * 60) / $TPOLL_CAU);
+							spx_log('CALCULO DE CAUDAL => CAUDAL CALCULADO SIN MAGPP');
+							spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
+						}
 					}
 					else{
 						# CALCULO DEL CAUDAL INSTANTANEO AHORA
 						spx_log('CALCULO DE CAUDAL => PERF CON FIRMWARE NUEVO');
+						spx_log('CALCULO DE CAUDAL => '.$count_pulses_cau.'m3/h ['. $count_time_min_cau.'/'.$TPOLL_CAU.']');
 						$CAUDAL_IMP = (($count_pulses_cau * 60) / $TPOLL_CAU);
+						spx_log('CALCULO DE CAUDAL => CAUDAL CALCULADO SIN MAGPP PRECARGADO');
 						spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP);
 						#
 					}
@@ -3049,6 +3061,7 @@ sub flow_calc
 				else
 				{
 					spx_log('CALCULO DE CAUDAL => CAUDAL = '.$CAUDAL_IMP.' {SE MANTIENE}');
+					spx_log('CALCULO DE CAUDAL => '.$count_pulses_cau.'m3/h ['. $count_time_min_cau.'/'.$TPOLL_CAU.']');
 				}
 			}
 			else{
@@ -3058,9 +3071,16 @@ sub flow_calc
 			
 			
 			if ($typeFirmware eq 'old'){
-				# CALCULO EL CAUDAL ACUMULADO ANTES
-				$CAUDAL_ACUM_IMP = ($count_pulses_cau_acum * $MAGPP * 10);
-				spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
+				if (not $MAGPP eq ''){
+					# CALCULO EL CAUDAL ACUMULADO AHORA
+					$CAUDAL_ACUM_IMP = ($count_pulses_cau_acum * $MAGPP);
+					spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
+				}
+				else{
+					# CALCULO EL CAUDAL ACUMULADO ANTES
+					$CAUDAL_ACUM_IMP = ($count_pulses_cau_acum);
+					spx_log('CALCULO DE CAUDAL => CAUDAL ACUMULADO = '.$CAUDAL_ACUM_IMP);
+				}
 				#
 			}
 			else{
